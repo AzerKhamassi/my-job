@@ -1,13 +1,15 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "start": "env-cmd -f ./.env expo start",
+    "android": "env-cmd -f ./.env expo start --android",
+    "ios": "env-cmd -f ./.env expo start --ios",
+    "web": "env-cmd -f ./.env expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.24.0",
+    "env-cmd": "^10.1.0",
     "expo": "~43.0.2",
     "expo-status-bar": "~1.1.0",
     "react": "17.0.1",
