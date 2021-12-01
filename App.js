@@ -1,14 +1,21 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import Login from './screens/Login/Login'
+import { StyleSheet, StatusBar, Platform } from 'react-native'
+import Navigator from './routes/homeStack'
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 
+import Tabs from './navigation/tabs';
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Login />
-      <StatusBar style="auto" />
-    </View>
+    <React.Fragment>
+      {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+      <Navigator />
+    </React.Fragment>
+    // <NavigationContainer>
+    //   <Tabs />
+    // </NavigationContainer>
+
+
   );
 }
 

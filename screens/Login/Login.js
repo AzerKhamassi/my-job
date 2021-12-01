@@ -10,7 +10,8 @@ import {
     Keyboard
 } from 'react-native'
 import logo from '../../assets/my-job.png'
-const Login = () => {
+
+const Login = (props) => {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
             <View style={styles.container}>
@@ -20,17 +21,26 @@ const Login = () => {
                 <View>
                     <TextInput placeholder='Email' style={styles.input} />
                     <TextInput placeholder='Password' secureTextEntry={true} style={styles.input} />
+                    <TextInput />
                 </View>
                 <View style={styles.forgotPaswword}>
                     <Text>Forgot password?</Text>
                 </View>
                 <View>
-                    <TouchableHighlight underlayColor='#52BCF6' style={styles.loginButton} onPress={() => console.log('hey')}>
+                    <TouchableHighlight
+                        underlayColor='#52BCF6'
+                        style={styles.loginButton}
+                        onPress={() => { props.navigation.replace('home') }}>
                         <Text style={styles.buttonText}>Sign in</Text>
                     </TouchableHighlight>
                 </View>
                 <View>
-                    <Text>Don't have an account? Sign up</Text>
+                    <Text>
+                        Don't have an account?
+                        <Text
+                            onPress={() => props.navigation.navigate('signup')}
+                            style={styles.signupLink}> Sign up</Text>
+                    </Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>
@@ -80,6 +90,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white'
+    },
+    signupLink: {
+        color: '#52BCF6',
     }
 });
 
