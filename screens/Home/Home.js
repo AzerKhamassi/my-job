@@ -20,6 +20,7 @@ import profileImage from '../../assets/azer.jpg'
 import { Feather } from '@expo/vector-icons';
 import OfferCard from '../../components/OfferCard/OfferCard'
 import Constants from 'expo-constants';
+import CategoryCard from './components/CategoryCard';
 
 
 const Home = (props) => {
@@ -33,7 +34,7 @@ const Home = (props) => {
                                 <Feather name="home" size={24} color="black" />
                                 <Text style={{ fontWeight: 'bold', fontSize: 18, marginHorizontal: 10 }}>Home</Text>
                             </View>
-                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('signup')}>
+                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('profile')}>
                                 <Image source={profileImage} style={styles.profileImage}></Image>
                             </TouchableWithoutFeedback>
                         </View >
@@ -51,29 +52,45 @@ const Home = (props) => {
                                 </TouchableHighlight>
                             </View>
                         </View>
-                        <View style={styles.recommendedTitle}>
+                        <View style={styles.sectionTitle}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Recommended</Text>
                             <Text style={{ fontSize: 10 }}>View All</Text>
                         </View>
                         <View style={styles.offersSection}>
                             {
-                                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(i => (
-                                    <OfferCard key={i} />
-
+                                [1, 2].map(i => (
+                                    <OfferCard key={i} navigation={props.navigation} />
                                 ))
                             }
                         </View>
-                        <View style={styles.recommendedTitle}>
+                        <View style={styles.sectionTitle}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Recently posted</Text>
                             <Text style={{ fontSize: 10 }}>View All</Text>
                         </View>
-                        <View style={styles.offersSection}>
+                        {/* <View style={styles.offersSection}>
                             {
                                 [1, 2, 3].map(i => (
                                     <OfferCard key={i} />
 
                                 ))
                             }
+                        </View> */}
+                        <View style={styles.sectionTitle}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Browse categories</Text>
+                            <Text style={{ fontSize: 10 }}>View All</Text>
+                        </View>
+                        <View style={styles.categoriesSection}>
+                            <ScrollView horizontal={true} >
+                                <Pressable style={{ display: 'flex', flexDirection: 'row' }}>
+
+                                    {
+                                        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+                                            <CategoryCard key={i} />
+
+                                        ))
+                                    }
+                                </Pressable>
+                            </ScrollView>
                         </View>
                     </Pressable>
                 </ScrollView >
@@ -87,7 +104,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F8F8FA',
         paddingTop: Constants.statusBarHeight,
-
     },
 
     headerSection: {
@@ -159,7 +175,7 @@ const styles = StyleSheet.create({
             }
         })
     },
-    recommendedTitle: {
+    sectionTitle: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -167,6 +183,9 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     offersSection: {
+        marginHorizontal: 30,
+    },
+    categoriesSection: {
         marginHorizontal: 30,
     }
 });
