@@ -12,6 +12,7 @@ import {
     ScrollView,
     Platform,
     Pressable,
+    TouchableNativeFeedback,
 
 } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        paddingTop: Constants.statusBarHeight,
+        paddingTop: Constants.statusBarHeight + 15,
     },
 
     headerSection: {
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
                 marginLeft: 175
             },
             android: {
-
+                marginLeft: 180
             },
             default: {
 

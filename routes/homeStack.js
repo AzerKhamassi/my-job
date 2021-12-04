@@ -6,6 +6,8 @@ import Signup from '../screens/Signup/Signup'
 import Home from '../screens/Home/Home'
 import OfferDetails from '../screens/OfferDetails/OfferDetails';
 import Profile from '../screens/Profile/Profile'
+import SavedOffers from '../screens/SavedOffers/SavedOffers';
+import Notifications from '../screens/Notifications/Notifications';
 screens = {
     login: {
         screen: Login,
@@ -30,6 +32,12 @@ screens = {
     },
     profile: {
         screen: Profile
+    },
+    savedOffers: {
+        screen: SavedOffers
+    },
+    notifications: {
+        screen: Notifications
     }
 }
 
