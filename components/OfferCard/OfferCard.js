@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 
 const OfferCard = (props) => {
     return (
-        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('offerDetails')}>
+        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('OfferDetails')}>
             <View style={styles.card}>
                 <View style={styles.cardContent}>
                     <Text style={styles.offerTitle}>Offer Title</Text>

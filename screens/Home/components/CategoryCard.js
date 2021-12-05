@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
         marginRight: 15,
         borderColor: '#eee',
         borderWidth: 1,
-        marginBottom: 20
     },
     cardTitle: {
         fontSize: 12,

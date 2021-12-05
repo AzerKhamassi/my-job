@@ -30,7 +30,7 @@ const Login = (props) => {
                     <TouchableHighlight
                         underlayColor='#52BCF6'
                         style={styles.loginButton}
-                        onPress={() => { props.navigation.replace('home') }}>
+                        onPress={() => { props.navigation.replace('Tabs') }}>
                         <Text style={styles.buttonText}>Sign in</Text>
                     </TouchableHighlight>
                 </View>

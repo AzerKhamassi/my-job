@@ -6,7 +6,7 @@ import OfferCard from '../../components/OfferCard/OfferCard';
 const SavedOffers = (props) => {
     return (
         <View style={styles.container}>
-            <ScrollView contentInsetAdjustmentBehavior="never">
+            <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
                 <Pressable>
                     {
                         [1, 2, 3, 4, 5, 6].map(i => (
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        paddingTop: Constants.statusBarHeight + 15,
+        paddingTop: 5,
         paddingHorizontal: 15,
         backgroundColor: '#F8F8FA',
     }

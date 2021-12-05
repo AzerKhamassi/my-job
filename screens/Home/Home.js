@@ -28,9 +28,9 @@ const Home = (props) => {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
-                <ScrollView contentInsetAdjustmentBehavior="never">
+                <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
                     <Pressable>
-                        <View style={styles.headerSection}>
+                        {/* <View style={styles.headerSection}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
                                 <Feather name="home" size={24} color="black" />
                                 <Text style={{ fontWeight: 'bold', fontSize: 18, marginHorizontal: 10 }}>Home</Text>
@@ -38,7 +38,7 @@ const Home = (props) => {
                             <TouchableWithoutFeedback onPress={() => props.navigation.navigate('profile')}>
                                 <Image source={profileImage} style={styles.profileImage}></Image>
                             </TouchableWithoutFeedback>
-                        </View >
+                        </View > */}
                         <View style={styles.searchSection}>
                             <View>
                                 <EvilIcons style={styles.searchIcon} name="search" size={24} color="black" />
@@ -68,20 +68,20 @@ const Home = (props) => {
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Recently posted</Text>
                             <Text style={{ fontSize: 10 }}>View All</Text>
                         </View>
-                        {/* <View style={styles.offersSection}>
+                        <View style={styles.offersSection}>
                             {
                                 [1, 2, 3].map(i => (
                                     <OfferCard key={i} />
 
                                 ))
                             }
-                        </View> */}
+                        </View>
                         <View style={styles.sectionTitle}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Browse categories</Text>
                             <Text style={{ fontSize: 10 }}>View All</Text>
                         </View>
                         <View style={styles.categoriesSection}>
-                            <ScrollView horizontal={true} >
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                                 <Pressable style={{ display: 'flex', flexDirection: 'row' }}>
 
                                     {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        paddingTop: Constants.statusBarHeight + 15,
+        paddingVertical: 5,
     },
 
     headerSection: {
@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 30,
+        paddingHorizontal: 30,
+        paddingVertical: 5,
         alignItems: 'flex-end'
     },
     offersSection: {

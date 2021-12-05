@@ -4,15 +4,18 @@ import Constants from 'expo-constants'
 import { Feather } from '@expo/vector-icons';
 import profileImage from '../../assets/azer.jpg'
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const Profile = (props) => {
     return (
         <View style={styles.container}>
-            <Feather name="settings" size={24} color="black" />
+            <View style={styles.settings}>
+                <Feather name="settings" size={24} color="black" />
+            </View>
             <View style={styles.imageContainer}>
                 <Image source={profileImage} style={styles.profileImage}></Image>
                 <View style={styles.editIcon}>
-                    <MaterialIcons name="edit" size={16} color="white" />
+                    <AntDesign name="camera" size={14} color="white" />
                 </View>
             </View>
             <View style={styles.title}>
@@ -53,9 +56,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        paddingTop: Constants.statusBarHeight,
+        paddingTop: 10,
         paddingHorizontal: 15,
         backgroundColor: '#F8F8FA',
+    },
+    settings: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     },
     profileImage: {
         height: 120,
@@ -97,16 +105,15 @@ const styles = StyleSheet.create({
     },
     editIcon: {
         backgroundColor: '#7CCCF8',
-        height: 25,
-        width: 25,
-        borderRadius: 25,
+        height: 30,
+        width: 30,
+        borderRadius: 20,
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        right: 110,
-        bottom: 10
+        right: 112,
+        bottom: 5,
     }
 
 })
