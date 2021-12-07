@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import Constants from 'expo-constants'
 import { Feather } from '@expo/vector-icons';
 import profileImage from '../../assets/azer.jpg'
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 const Profile = (props) => {
     return (
         <View style={styles.container}>
@@ -48,6 +48,29 @@ const Profile = (props) => {
                     Current Location
                 </Text>
             </View>
+            <View style={styles.section}>
+                <View style={styles.mapContainer}>
+                    <MapView
+                        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                        style={styles.map}
+                        region={{
+                            latitude: 35.843400794030224,
+                            longitude: 10.618040611648018,
+                            latitudeDelta: 0.015,
+                            longitudeDelta: 0.0121,
+                        }}
+
+                    >
+                        <Marker
+                            coordinate={{ latitude: 35.843400794030224, longitude: 10.618040611648018 }}
+                            title={'Current Location'}
+                            description={'Hey'}
+                        >
+
+                        </Marker>
+                    </MapView>
+                </View>
+            </View>
         </View>
     )
 }
@@ -57,12 +80,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F8F8FA',
         paddingTop: 10,
-        paddingHorizontal: 15,
-        backgroundColor: '#F8F8FA',
     },
     settings: {
         display: 'flex',
         flexDirection: 'row',
+        paddingHorizontal: 15,
         justifyContent: 'flex-end'
     },
     profileImage: {
@@ -112,9 +134,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        right: 112,
+        right: 125,
         bottom: 5,
-    }
+    },
+    mapContainer: {
+        ...StyleSheet.absoluteFillObject,
+        height: 400,
+        width: 400,
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
 
 })
 

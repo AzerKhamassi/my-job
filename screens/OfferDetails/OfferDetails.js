@@ -8,12 +8,11 @@ import OfferCard from '../../components/OfferCard/OfferCard';
 const OfferDetails = (props) => {
 
     React.useEffect(() => {
+
     }, [])
     return (
         <View style={styles.container}>
             <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
-
-
                 <View style={styles.titleSection}>
                     <Text style={styles.offerTitle}>Full Stack Developer - Javascript</Text>
                     <Foundation name="bookmark" size={30} color="#52BCF6" />

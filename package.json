@@ -23,6 +23,7 @@
     "react-freeze": "^1.0.0",
     "react-native": "0.64.3",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-maps": "0.29.4",
     "react-native-paper": "^4.10.1",
     "react-native-reanimated": "^2.2.4",
     "react-native-safe-area-context": "3.3.2",

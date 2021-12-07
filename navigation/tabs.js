@@ -23,14 +23,12 @@ const HomeStackScreen = () => {
                 title: '',
                 headerLeft: (props) => (
                     <React.Fragment>
-                        <Feather name="home" size={30} color="black" />
                         <Image source={logo} alt='logo' style={{ height: 30, width: 55, marginHorizontal: 10 }}></Image>
                     </React.Fragment>
                 ),
             }} />
             <HomeStack.Screen name="OfferDetails" component={OfferDetails} options={{
                 title: 'Offer Details',
-
             }} />
         </HomeStack.Navigator>
     );

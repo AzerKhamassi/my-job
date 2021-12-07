@@ -10,6 +10,7 @@ import {
     Keyboard
 } from 'react-native'
 import logo from '../../assets/my-job.png'
+import Constants from 'expo-constants'
 
 const Login = (props) => {
     return (
@@ -38,7 +39,7 @@ const Login = (props) => {
                     <Text>
                         Don't have an account?
                         <Text
-                            onPress={() => props.navigation.navigate('signup')}
+                            onPress={() => props.navigation.navigate('Signup')}
                             style={styles.signupLink}> Sign up</Text>
                     </Text>
                 </View>
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F8F8FA',
         alignItems: 'center',
         justifyContent: 'center',
+        // paddingTop: Constants.statusBarHeight + 20
     },
     logoContainer: {
         height: 150,
