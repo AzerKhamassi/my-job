@@ -15,18 +15,14 @@ const App = () => {
   return (
     <React.Fragment>
       <AppContext>
-
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
-            {/* <Stack.Screen name="OfferDetails" component={OfferDetails} options={{ headerShown: false }} /> */}
             <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
           </Stack.Navigator>
-          {/* <Tabs /> */}
         </NavigationContainer>
-        {/* <Navigator /> */}
       </AppContext>
     </React.Fragment>
 

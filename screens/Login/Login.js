@@ -26,7 +26,6 @@ const Login = (props) => {
             props.navigation.replace('Tabs')
 
         }).catch(err => {
-            console.log(err)
             if (err.response.status === 400)
                 setErrMessage(true)
         })

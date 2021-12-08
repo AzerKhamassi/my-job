@@ -1,8 +1,7 @@
 import axios from 'axios';
 import asyncStorageService from './asyncStorageService';
-const apiHost = 'https://my-job-api.herokuapp.com';
+const apiHost = process.env.REACT_APP_APIURL;
 const axiosInstance = axios.create({ baseURL: apiHost });
-
 axiosInstance.interceptors.request.use(
     async (config) => {
         const accessToken = await asyncStorageService.getAccessToken();

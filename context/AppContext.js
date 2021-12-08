@@ -12,7 +12,7 @@ const AppContext = (props) => {
         if (accessToken) {
             axios.get(`/user/connected-user`)
                 .then(response => {
-                    console.log(response.data.connectedUser)
+                    setUser(response.data.connectedUser)
                     setLoadingUser(false)
                 }).catch(err => {
                     console.log(err)

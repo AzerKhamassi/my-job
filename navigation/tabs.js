@@ -27,7 +27,7 @@ const HomeStackScreen = () => {
                     </React.Fragment>
                 ),
                 headerRight: (props) => (
-                    <AntDesign style={{ marginHorizontal: 25 }} name="message1" size={30} color="#A7A7A7" />
+                    <AntDesign style={{ marginHorizontal: 20 }} name="message1" size={30} color="#A7A7A7" />
                 )
             }} />
             <HomeStack.Screen name="OfferDetails" component={OfferDetails} options={{

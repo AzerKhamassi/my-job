@@ -20,19 +20,18 @@ const Profile = (props) => {
                 let { status } = await Location.requestForegroundPermissionsAsync();
                 if (status !== 'granted') {
                     return;
+
                 }
                 let location = await Location.getCurrentPositionAsync({});
                 if (location) {
                     setLatitude(location.coords.latitude)
                     setLongitude(location.coords.longitude)
                 }
-
             })();
         } catch (error) {
             console.log(error)
         }
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.settings}>
