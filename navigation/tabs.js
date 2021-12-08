@@ -14,7 +14,7 @@ import logo from '../assets/my-job.png'
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
 const SavedOffersStack = createNativeStackNavigator()
-import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const HomeStackScreen = () => {
     return (
@@ -26,6 +26,9 @@ const HomeStackScreen = () => {
                         <Image source={logo} alt='logo' style={{ height: 30, width: 55, marginHorizontal: 10 }}></Image>
                     </React.Fragment>
                 ),
+                headerRight: (props) => (
+                    <AntDesign style={{ marginHorizontal: 25 }} name="message1" size={30} color="#A7A7A7" />
+                )
             }} />
             <HomeStack.Screen name="OfferDetails" component={OfferDetails} options={{
                 title: 'Offer Details',
@@ -70,10 +73,10 @@ const Tabs = () => {
             }} />
             <Tab.Screen name='Notifications' component={NotificationsScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
-                    <FontAwesome name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                    <FontAwesome style={focused && { transform: [{ rotate: '45deg' }] }} name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
                 ),
                 tabBarActiveTintColor: '#52BCF6',
-                tabBarBadge: 3
+                tabBarBadge: 3,
             }} />
             <Tab.Screen name='Profile' component={ProfileScreen} options={{
                 tabBarIcon: ({ focused, color }) => (

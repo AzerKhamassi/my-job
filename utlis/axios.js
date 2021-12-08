@@ -1,11 +1,11 @@
 import axios from 'axios';
-import localStorageService from './localStorageService';
-const apiHost = process.env.REACT_APP_APIURL;
+import asyncStorageService from './asyncStorageService';
+const apiHost = 'https://my-job-api.herokuapp.com';
 const axiosInstance = axios.create({ baseURL: apiHost });
 
 axiosInstance.interceptors.request.use(
-    (config) => {
-        const accessToken = localStorageService.getAccessToken();
+    async (config) => {
+        const accessToken = await asyncStorageService.getAccessToken();
         if (accessToken) {
             config.headers['Authorization'] = 'Bearer ' + accessToken;
         }
@@ -25,25 +25,26 @@ axiosInstance.interceptors.response.use(
             if (error.response.status === 401 && !originalRequest._retry) {
 
                 originalRequest._retry = true;
-
+                let _accessToken
+                asyncStorageService.getAccessToken().then(token => _accessToken = token)
                 return axios.post(`${apiHost}/user/token`, {
-                    accessToken: localStorageService.getAccessToken()
+                    accessToken: _accessToken
                 })
-                    .then(res => {
+                    .then(async res => {
                         if (res.status === 200) {
                             // 1) put token to LocalStorage
-                            localStorageService.setAccessToken(res.data.accessToken);
+                            await asyncStorageService.setAccessToken(res.data.accessToken);
                             // 2) Change Authorization header
                             axios.defaults.headers.common['Authorization'] =
-                                'Bearer ' + localStorageService.getAccessToken();
+                                'Bearer ' + await asyncStorageService.getAccessToken();
                             originalRequest.headers['Authorization'] =
-                                'Bearer ' + localStorageService.getAccessToken();
+                                'Bearer ' + await asyncStorageService.getAccessToken();
                             // 3) return originalRequest object with Axios.
                             return axios(originalRequest);
                         }
                     });
             } else if (error.response.status === 403) {
-                localStorageService.clearToken();
+                asyncStorageService.clearToken().then();
                 // window.location.href = "/login";
             } else return Promise.reject(error);
         else return Promise.reject(error);

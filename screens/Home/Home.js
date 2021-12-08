@@ -12,7 +12,6 @@ import {
     ScrollView,
     Platform,
     Pressable,
-    TouchableNativeFeedback,
 
 } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';

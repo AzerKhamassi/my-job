@@ -8,22 +8,26 @@ import Login from './screens/Login/Login'
 import Tabs from './navigation/tabs';
 import Signup from './screens/Signup/Signup';
 import OfferDetails from './screens/OfferDetails/OfferDetails';
+import AppContext from './context/AppContext';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <React.Fragment>
-      {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="OfferDetails" component={OfferDetails} options={{ headerShown: false }} /> */}
-          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-        </Stack.Navigator>
-        {/* <Tabs /> */}
-      </NavigationContainer>
-      {/* <Navigator /> */}
+      <AppContext>
+
+        {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
+            {/* <Stack.Screen name="OfferDetails" component={OfferDetails} options={{ headerShown: false }} /> */}
+            <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+          </Stack.Navigator>
+          {/* <Tabs /> */}
+        </NavigationContainer>
+        {/* <Navigator /> */}
+      </AppContext>
     </React.Fragment>
 
 

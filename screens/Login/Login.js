@@ -11,8 +11,28 @@ import {
 } from 'react-native'
 import logo from '../../assets/my-job.png'
 import Constants from 'expo-constants'
-
+import axios from '../../utlis/axios'
+import asyncStorageService from '../../utlis/asyncStorageService'
 const Login = (props) => {
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const [errMessage, setErrMessage] = React.useState(false)
+    const loginHandler = () => {
+        axios.post('/user/login', {
+            identifier: email,
+            password
+        }).then(response => {
+            asyncStorageService.setAccessToken(response.data.accessToken)
+            props.navigation.replace('Tabs')
+
+        }).catch(err => {
+            console.log(err)
+            if (err.response.status === 400)
+                setErrMessage(true)
+        })
+
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
             <View style={styles.container}>
@@ -20,18 +40,36 @@ const Login = (props) => {
                     <Image source={logo} style={styles.logo}></Image>
                 </View>
                 <View>
-                    <TextInput placeholder='Email' style={styles.input} />
-                    <TextInput placeholder='Password' secureTextEntry={true} style={styles.input} />
-                    <TextInput />
+                    <TextInput placeholder='Email'
+                        style={styles.input}
+                        value={email}
+                        onChangeText={(text) => setEmail(text)}
+                        onFocus={() => setErrMessage(false)}
+                    />
+                    <TextInput placeholder='Password'
+                        style={styles.input}
+                        secureTextEntry={true}
+                        value={password}
+                        onChangeText={(text) => setPassword(text)}
+                        onFocus={() => setErrMessage(false)}
+                    />
                 </View>
                 <View style={styles.forgotPaswword}>
                     <Text>Forgot password?</Text>
                 </View>
-                <View>
+                {
+                    errMessage &&
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorMessage}>
+                            Incorrect email or password!
+                        </Text>
+                    </View>
+                }
+                <View >
                     <TouchableHighlight
                         underlayColor='#52BCF6'
                         style={styles.loginButton}
-                        onPress={() => { props.navigation.replace('Tabs') }}>
+                        onPress={() => { loginHandler() }}>
                         <Text style={styles.buttonText}>Sign in</Text>
                     </TouchableHighlight>
                 </View>
@@ -88,13 +126,24 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 30,
         color: 'white',
-        marginVertical: 25
+        marginVertical: 20
     },
     buttonText: {
         color: 'white'
     },
     signupLink: {
         color: '#52BCF6',
+    },
+    errorContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    errorMessage: {
+        color: 'red',
+        fontWeight: 'bold'
     }
 });
 

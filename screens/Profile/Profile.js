@@ -1,12 +1,38 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
-import Constants from 'expo-constants'
+import { View, Text, StyleSheet, Image, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import profileImage from '../../assets/azer.jpg'
-import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
+import { MaterialIcons } from '@expo/vector-icons';
+
+
 const Profile = (props) => {
+    const [longitude, setLongitude] = React.useState(10.618040611648018)
+    const [latitude, setLatitude] = React.useState(36.843400794030224)
+    React.useEffect(() => {
+    }, [])
+
+    const getCurrentPositionHandler = () => {
+        try {
+            (async () => {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    return;
+                }
+                let location = await Location.getCurrentPositionAsync({});
+                if (location) {
+                    setLatitude(location.coords.latitude)
+                    setLongitude(location.coords.longitude)
+                }
+
+            })();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.settings}>
@@ -40,13 +66,16 @@ const Profile = (props) => {
                     <Text>Applied jobs </Text>
                 </View>
                 <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
-                    <Text>Reviews</Text>
+                    <Text>Skills</Text>
                 </View>
             </View>
             <View style={styles.section}>
                 <Text style={{ fontWeight: 'bold' }}>
                     Current Location
                 </Text>
+                <TouchableWithoutFeedback onPress={() => getCurrentPositionHandler()}>
+                    <MaterialIcons style={styles.myLocation} name="my-location" size={24} color="black" />
+                </TouchableWithoutFeedback>
             </View>
             <View style={styles.section}>
                 <View style={styles.mapContainer}>
@@ -59,14 +88,12 @@ const Profile = (props) => {
                             latitudeDelta: 0.015,
                             longitudeDelta: 0.0121,
                         }}
-
                     >
                         <Marker
-                            coordinate={{ latitude: 35.843400794030224, longitude: 10.618040611648018 }}
+                            coordinate={{ latitude, longitude }}
                             title={'Current Location'}
                             description={'Hey'}
                         >
-
                         </Marker>
                     </MapView>
                 </View>
@@ -111,7 +138,10 @@ const styles = StyleSheet.create({
     },
     section: {
         paddingHorizontal: 25,
-        marginTop: 10
+        marginTop: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     fullName: {
         fontSize: 18,
@@ -148,7 +178,9 @@ const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
     },
-
+    myLocation: {
+        marginHorizontal: 10
+    }
 })
 
 export default Profile
