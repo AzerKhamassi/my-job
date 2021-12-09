@@ -8,7 +8,7 @@ const CategoryCard = (props) => {
             <View style={styles.categoryIcon}>
                 <MaterialIcons name="card-giftcard" size={50} color="black" />
             </View>
-            <Text style={styles.cardTitle}>Category Name</Text>
+            <Text style={styles.cardTitle}>{props.category.name}</Text>
         </View>
     )
 }

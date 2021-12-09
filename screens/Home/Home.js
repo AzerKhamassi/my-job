@@ -21,9 +21,23 @@ import { Feather } from '@expo/vector-icons';
 import OfferCard from '../../components/OfferCard/OfferCard'
 import Constants from 'expo-constants';
 import CategoryCard from './components/CategoryCard';
-
+import axios from '../../utlis/axios'
+import GlobalContext from '../../context/GlobalContext';
 
 const Home = (props) => {
+
+    const [offers, setOffers] = React.useState(null)
+    const context = React.useContext(GlobalContext)
+    React.useEffect(() => {
+        axios.get('/offer')
+            .then(res => {
+                setOffers(res.data.offers)
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [])
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
@@ -58,7 +72,7 @@ const Home = (props) => {
                         </View>
                         <View style={styles.offersSection}>
                             {
-                                [1, 2].map(i => (
+                                [].map(i => (
                                     <OfferCard key={i} navigation={props.navigation} />
                                 ))
                             }
@@ -69,8 +83,8 @@ const Home = (props) => {
                         </View>
                         <View style={styles.offersSection}>
                             {
-                                [1, 2, 3].map(i => (
-                                    <OfferCard key={i} />
+                                offers?.map((offer, i) => (
+                                    <OfferCard key={i} offer={offer} navigation={props.navigation} />
 
                                 ))
                             }
@@ -84,8 +98,8 @@ const Home = (props) => {
                                 <Pressable style={{ display: 'flex', flexDirection: 'row' }}>
 
                                     {
-                                        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-                                            <CategoryCard key={i} />
+                                        context.user?.domain?.categories.map((category, i) => (
+                                            <CategoryCard key={i} category={category} />
 
                                         ))
                                     }

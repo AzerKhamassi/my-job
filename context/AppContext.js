@@ -23,12 +23,29 @@ const AppContext = (props) => {
             setLoadingUser(false)
         }
     }, [])
+    const addUserSavedOffer = (offer) => {
+        console.log(user.savedOffers.map(o => o._id))
+        setUser({
+            ...user,
+            savedOffers: [...user.savedOffers, offer]
+        })
+    }
+    const removeUserSavedOffer = (offerId) => {
+        console.log(offerId)
+        console.log(user.savedOffers.map(o => o._id))
 
+        setUser({
+            ...user,
+            savedOffers: [...user.savedOffers.filter(o => o._id !== offerId)]
+        })
+    }
     return (
         <GlobalContext.Provider
             value={{
                 user,
-                setUser
+                setUser,
+                removeUserSavedOffer,
+                addUserSavedOffer
             }}
         >
             {!loadingUser && props.children}

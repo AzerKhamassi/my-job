@@ -12,20 +12,28 @@ import {
 import logo from '../../assets/my-job.png'
 import Constants from 'expo-constants'
 import axios from '../../utlis/axios'
+import GlobalContext from '../../context/GlobalContext'
 import asyncStorageService from '../../utlis/asyncStorageService'
 const Login = (props) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [errMessage, setErrMessage] = React.useState(false)
+    const context = React.useContext(GlobalContext)
+
+    React.useEffect(() => {
+        if (context.user)
+            props.navigation.replace('Tabs')
+    }, [])
     const loginHandler = () => {
         axios.post('/user/login', {
             identifier: email,
             password
-        }).then(response => {
-            asyncStorageService.setAccessToken(response.data.accessToken)
+        }).then(async (response) => {
+            await asyncStorageService.setAccessToken(response.data.accessToken)
             props.navigation.replace('Tabs')
 
         }).catch(err => {
+            console.log(err)
             if (err.response.status === 400)
                 setErrMessage(true)
         })

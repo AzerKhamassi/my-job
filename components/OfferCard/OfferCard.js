@@ -1,28 +1,59 @@
 import React from 'react'
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
 import { Feather } from '@expo/vector-icons';
-
+import FormatDate from '../../utlis/FormatDate';
+import GlobalContext from '../../context/GlobalContext';
+import axios from '../../utlis/axios'
 const OfferCard = (props) => {
+    const context = React.useContext(GlobalContext)
+
+    const addOfferHandler = () => {
+        axios.post('/user/saved', { offerId: props.offer._id })
+            .then((res) => {
+                context.addUserSavedOffer(props.offer)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    const removeOfferHandler = () => {
+        console.log('no')
+        axios.delete(`/user/saved/${props.offer._id}`, { offerId: props.offer._id })
+            .then((res) => {
+                context.removeUserSavedOffer(props.offer._id)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     return (
-        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('OfferDetails')}>
+        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('OfferDetails', { offerId: props.offer?._id })}>
             <View style={styles.card}>
                 <View style={styles.cardContent}>
-                    <Text style={styles.offerTitle}>Offer Title</Text>
-                    <Feather name="bookmark" size={20} color="#52BCF6" />
+                    <Text style={styles.offerTitle}>{props.offer?.name}</Text>
+
+                    {
+                        !context.user.savedOffers.map(o => o._id).includes(props.offer._id) ?
+                            <Feather name="bookmark" size={20} color="#52BCF6" onPress={addOfferHandler} />
+                            :
+                            <Feather name="bookmark" size={20} color="#990000" onPress={removeOfferHandler} />
+
+                    }
                 </View>
                 <View>
-                    <Text style={styles.date}>
-                        2 days ago
-                    </Text>
+                    {props.offer && <Text style={styles.date}>
+                        <FormatDate>
+                            {props.offer.date}
+                        </FormatDate>
+                    </Text>}
                 </View>
                 <View>
-                    <Text>Description</Text>
+                    <Text>{props.offer?.jobDescription}</Text>
                 </View>
                 <View style={styles.tagsContainer}>
                     {
-                        [1, 2, 3].map(i => (
-
-                            <Text key={i} style={styles.tag}>React</Text>
+                        props.tags?.map((tag, index) => (
+                            <Text key={index} style={styles.tag}>{tag.name}</Text>
                         ))
                     }
                 </View>

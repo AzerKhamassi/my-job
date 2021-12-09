@@ -1,6 +1,7 @@
 import axios from 'axios';
 import asyncStorageService from './asyncStorageService';
-const apiHost = process.env.REACT_APP_APIURL;
+const apiHost = process.env.API_URL;
+console.log(apiHost)
 const axiosInstance = axios.create({ baseURL: apiHost });
 axiosInstance.interceptors.request.use(
     async (config) => {
@@ -18,7 +19,7 @@ axiosInstance.interceptors.response.use(
     (response) => {
         return response;
     },
-    function (error) {
+    async function (error) {
         const originalRequest = error.config;
         if (error.response)
             if (error.response.status === 401 && !originalRequest._retry) {
@@ -43,7 +44,7 @@ axiosInstance.interceptors.response.use(
                         }
                     });
             } else if (error.response.status === 403) {
-                asyncStorageService.clearToken().then();
+                await asyncStorageService.clearToken();
                 // window.location.href = "/login";
             } else return Promise.reject(error);
         else return Promise.reject(error);
