@@ -8,6 +8,7 @@ const AppContext = (props) => {
     const [loadingUser, setLoadingUser] = React.useState(true)
 
     React.useEffect(async () => {
+        // await asyncStorageService.clearToken()
         const accessToken = await asyncStorageService.getAccessToken()
         if (accessToken) {
             axios.get(`/user/connected-user`)

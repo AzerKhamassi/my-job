@@ -14,7 +14,11 @@ import Constants from 'expo-constants'
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext'
 import asyncStorageService from '../../utlis/asyncStorageService'
+
+import GlobalContext from '../../context/GlobalContext'
+
 const Login = (props) => {
+    const context = React.useContext(GlobalContext);
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [errMessage, setErrMessage] = React.useState(false)

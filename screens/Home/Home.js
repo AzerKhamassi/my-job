@@ -1,8 +1,6 @@
 import React from 'react'
 import {
-    Image,
     View,
-    SafeAreaView,
     StyleSheet,
     TextInput,
     TouchableWithoutFeedback,
@@ -12,14 +10,12 @@ import {
     ScrollView,
     Platform,
     Pressable,
+    Dimensions,
 
 } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
-import profileImage from '../../assets/azer.jpg'
-import { Feather } from '@expo/vector-icons';
 import OfferCard from '../../components/OfferCard/OfferCard'
-import Constants from 'expo-constants';
 import CategoryCard from './components/CategoryCard';
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext';
@@ -41,17 +37,14 @@ const Home = (props) => {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
-                <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
+                <ScrollView
+                    contentInsetAdjustmentBehavior="never"
+                    showsVerticalScrollIndicator={false}
+                    onScroll={(e) => onScrollHandler(e)}
+                    scrollEventThrottle={10}
+                >
                     <Pressable>
-                        {/* <View style={styles.headerSection}>
-                            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
-                                <Feather name="home" size={24} color="black" />
-                                <Text style={{ fontWeight: 'bold', fontSize: 18, marginHorizontal: 10 }}>Home</Text>
-                            </View>
-                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('profile')}>
-                                <Image source={profileImage} style={styles.profileImage}></Image>
-                            </TouchableWithoutFeedback>
-                        </View > */}
+
                         <View style={styles.searchSection}>
                             <View>
                                 <EvilIcons style={styles.searchIcon} name="search" size={24} color="black" />
