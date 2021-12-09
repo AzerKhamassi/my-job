@@ -4,77 +4,112 @@ import Constants from 'expo-constants';
 import { Foundation } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import OfferCard from '../../components/OfferCard/OfferCard';
-
+import axios from '../../utlis/axios'
+import GlobalContext from '../../context/GlobalContext'
 const OfferDetails = (props) => {
 
+    const [offer, setOffer] = React.useState(null)
+    const [relatedOffers, setRelatedOffers] = React.useState([])
+    const context = React.useContext(GlobalContext)
     React.useEffect(() => {
-
+        axios.get(`/offer/${props.route.params.offerId}`)
+            .then(res => {
+                setOffer(res.data.offer)
+                setRelatedOffers(res.data.relatedOffers)
+            })
     }, [])
-    return (
-        <View style={styles.container}>
-            <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
-                <View style={styles.titleSection}>
-                    <Text style={styles.offerTitle}>Full Stack Developer - Javascript</Text>
-                    <Foundation name="bookmark" size={30} color="#52BCF6" />
-                </View>
-                <View>
-                    <Text style={styles.companyName}>Next-IT Solutions</Text>
-                </View>
-                <View style={styles.offerHighlights}>
-                    <Feather name="map-pin" size={18} color="black" />
-                    <Text style={{ color: '#A7A7A7', marginHorizontal: 5 }}>New York, NY 100003</Text>
-                </View>
-                <View style={styles.navigationHeader}>
-                    <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
-                        <Text>Description</Text>
+
+    const addOfferHandler = () => {
+        axios.post('/user/saved', { offerId: offer._id })
+            .then((res) => {
+                context.addUserSavedOffer(offer)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    const removeOfferHandler = () => {
+        console.log('no')
+        axios.delete(`/user/saved/${offer._id}`, { offerId: offer._id })
+            .then((res) => {
+                context.removeUserSavedOffer(offer._id)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    if (offer)
+        return (
+            <View style={styles.container}>
+                <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
+                    <View style={styles.titleSection}>
+                        <Text style={styles.offerTitle}>{offer.name}</Text>
+                        {
+                            !context.user.savedOffers.map(o => o._id).includes(offer._id) ?
+                                <Foundation name="bookmark" size={30} color="#52BCF6" onPress={addOfferHandler} />
+                                :
+                                <Foundation name="bookmark" size={30} color="#990000" onPress={removeOfferHandler} />
+                        }
                     </View>
-                    <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
-                        <Text>About Company</Text>
+                    <View>
+                        <Text style={styles.companyName}>{offer.owner.name}</Text>
                     </View>
-                    <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
-                        <Text>Map</Text>
+                    <View style={styles.offerHighlights}>
+                        <Feather name="map-pin" size={18} color="black" />
+                        <Text style={{ color: '#A7A7A7', marginHorizontal: 5 }}>{`${offer.city.country.name} ,${offer.city.name}`}</Text>
                     </View>
-                </View>
-                <View style={styles.description}>
-                    <Text style={{ color: '#909090' }}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </Text>
-                </View>
-                <View style={styles.section}>
-                    <Text style={{ fontWeight: 'bold' }}>
-                        Requirements
-                    </Text>
-                </View>
-                <View style={styles.section}>
-                    <Text style={{ color: '#909090' }}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </Text>
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                    <TouchableHighlight
-                        underlayColor='#52BCF6'
-                        style={styles.applyButton}
-                        onPress={() => { console.log('apply now!') }}>
-                        <Text style={styles.buttonText}>Apply now</Text>
-                    </TouchableHighlight>
-                </View>
-                <View style={styles.section}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-                        Related Offers
-                    </Text>
-                </View>
-                {/* <ScrollView contentInsetAdjustmentBehavior="never" style={{ marginTop: 5 }} showsVerticalScrollIndicator={false}> */}
-                <View style={styles.section}>
-                    {
-                        [1, 2, 3, 4, 5, 6].map(i => (
-                            <OfferCard key={i} navigation={props.navigation} />
-                        ))
-                    }
-                </View>
-                {/* </ScrollView> */}
-            </ScrollView>
-        </View>
-    )
+                    <View style={styles.navigationHeader}>
+                        <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
+                            <Text>Description</Text>
+                        </View>
+                        <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
+                            <Text>About Company</Text>
+                        </View>
+                        <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
+                            <Text>Map</Text>
+                        </View>
+                    </View>
+                    <View style={styles.description}>
+                        <Text style={{ color: '#909090' }}>
+                            {offer.jobDescription}
+                        </Text>
+                    </View>
+                    <View style={styles.section}>
+                        <Text style={{ fontWeight: 'bold' }}>
+                            Requirements
+                        </Text>
+                    </View>
+                    <View style={styles.section}>
+                        <Text style={{ color: '#909090' }}>
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        </Text>
+                    </View>
+                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                        <TouchableHighlight
+                            underlayColor='#52BCF6'
+                            style={styles.applyButton}
+                            onPress={() => { console.log('apply now!') }}>
+                            <Text style={styles.buttonText}>Apply now</Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View style={styles.section}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+                            Related Offers
+                        </Text>
+                    </View>
+                    {/* <ScrollView contentInsetAdjustmentBehavior="never" style={{ marginTop: 5 }} showsVerticalScrollIndicator={false}> */}
+                    <View style={styles.section}>
+                        {
+                            relatedOffers.map((relatedOffer, i) => (
+                                <OfferCard key={i} offer={relatedOffer} navigation={props.navigation} />
+                            ))
+                        }
+                    </View>
+                    {/* </ScrollView> */}
+                </ScrollView>
+            </View>
+        )
+    return null
 }
 
 const styles = StyleSheet.create({

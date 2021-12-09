@@ -1,16 +1,16 @@
 import React from 'react'
 import { View, StyleSheet, Text, ScrollView, Pressable } from 'react-native'
-import Constants from 'expo-constants';
 import OfferCard from '../../components/OfferCard/OfferCard';
-
+import GlobalContext from '../../context/GlobalContext'
 const SavedOffers = (props) => {
+    const context = React.useContext(GlobalContext)
     return (
         <View style={styles.container}>
             <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
                 <Pressable>
                     {
-                        [1, 2, 3, 4, 5, 6].map(i => (
-                            <OfferCard key={i} navigation={props.navigation} />
+                        context.user.savedOffers.map((offer, i) => (
+                            <OfferCard key={i} offer={offer} navigation={props.navigation} />
                         ))
                     }
                 </Pressable>
