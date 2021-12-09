@@ -34,11 +34,14 @@ const Profile = (props) => {
     }
     return (
         <View style={styles.container}>
-            <View style={styles.settings}>
-                <Feather name="settings" size={24} color="black" />
-            </View>
+            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
+                <View style={styles.settings}>
+                    <Feather name="settings" size={24} color="black" />
+                </View>
+            </TouchableWithoutFeedback>
             <View style={styles.imageContainer}>
                 <Image source={profileImage} style={styles.profileImage}></Image>
+
                 <View style={styles.editIcon}>
                     <AntDesign name="camera" size={14} color="white" />
                 </View>

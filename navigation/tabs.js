@@ -11,11 +11,13 @@ import OfferDetails from '../screens/OfferDetails/OfferDetails';
 import { Text, Image } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/elements';
 import logo from '../assets/my-job.png'
+import { AntDesign } from '@expo/vector-icons';
+import SettingsScreen from '../screens/Settings/Settings';
+
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
 const SavedOffersStack = createNativeStackNavigator()
-import { AntDesign } from '@expo/vector-icons';
-
+const ProfileStack = createNativeStackNavigator()
 const HomeStackScreen = () => {
     return (
         <HomeStack.Navigator>
@@ -51,6 +53,20 @@ const SavedOffersStackScreen = () => {
     );
 }
 
+const ProfileStackScreen = () => {
+    return (
+        <SavedOffersStack.Navigator>
+            <SavedOffersStack.Screen name="ProfilePage" component={ProfileScreen} options={{
+                title: 'Profile'
+
+            }} />
+            <SavedOffersStack.Screen name="Settings" component={SettingsScreen} options={{
+
+            }} />
+        </SavedOffersStack.Navigator>
+    );
+}
+
 const Tabs = () => {
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
@@ -78,11 +94,12 @@ const Tabs = () => {
                 tabBarActiveTintColor: '#52BCF6',
                 tabBarBadge: 3,
             }} />
-            <Tab.Screen name='Profile' component={ProfileScreen} options={{
+            <Tab.Screen name='Profile' component={ProfileStackScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
                     <FontAwesome name="user" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
                 ),
                 tabBarActiveTintColor: '#52BCF6',
+                headerShown: false,
             }} />
         </Tab.Navigator>
     )
