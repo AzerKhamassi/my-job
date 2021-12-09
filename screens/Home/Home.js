@@ -18,11 +18,15 @@ import { Octicons } from '@expo/vector-icons';
 import OfferCard from '../../components/OfferCard/OfferCard'
 import CategoryCard from './components/CategoryCard';
 import { CommonActions } from "@react-navigation/native";
+import RBSheet from "react-native-raw-bottom-sheet";
+import SearchFilters from './components/SearchFilters';
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const Home = (props) => {
+    const refRBSheet = React.useRef();
+
     var offset = 0;
     const onScrollHandler = (e) => {
         const currentOffset = e.nativeEvent.contentOffset.y;
@@ -53,7 +57,6 @@ const Home = (props) => {
                     scrollEventThrottle={10}
                 >
                     <Pressable>
-
                         <View style={styles.searchSection}>
                             <View>
                                 <EvilIcons style={styles.searchIcon} name="search" size={24} color="black" />
@@ -62,10 +65,33 @@ const Home = (props) => {
                             </View>
                             <View>
                                 <TouchableHighlight
+                                    onPress={() => refRBSheet.current.open()}
                                     underlayColor='#52BCF6'
                                     style={styles.searchButton}>
                                     <Octicons name="settings" size={24} color="white" />
                                 </TouchableHighlight>
+                                <RBSheet
+                                    ref={refRBSheet}
+                                    closeOnDragDown={true}
+                                    closeOnPressMask={true}
+                                    customStyles={{
+                                        wrapper: {
+                                            backgroundColor: "rgba(0, 0, 0, 0.5)"
+                                        },
+                                        draggableIcon: {
+                                            backgroundColor: "#000"
+                                        },
+                                        container: {
+                                            borderRadius: 20,
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            paddingBottom: 8
+                                        }
+                                    }}
+                                >
+                                    <SearchFilters />
+                                </RBSheet>
                             </View>
                         </View>
                         <View style={styles.sectionTitle}>

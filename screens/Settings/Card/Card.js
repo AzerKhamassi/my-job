@@ -6,9 +6,7 @@ const Card = (props) => {
     return (
         <View style={styles.card}>
             <View style={{ marginHorizontal: 10 }}>
-                {
-                    props.icon
-                }
+                {props.icon}
             </View>
             <View style={{ flex: 5 }}>
                 <Text>{props.name}</Text>
