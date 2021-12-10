@@ -20,6 +20,7 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async function (error) {
+        console.log(error.response.status)
         const originalRequest = error.config;
         if (error.response)
             if (error.response.status === 401 && !originalRequest._retry) {
@@ -42,8 +43,12 @@ axiosInstance.interceptors.response.use(
                             // 3) return originalRequest object with Axios.
                             return axios(originalRequest);
                         }
-                    });
+                    }).catch(async (err) => {
+                        await asyncStorageService.clearToken();
+                        return Promise.reject(err)
+                    })
             } else if (error.response.status === 403) {
+                console.log('no access allowed')
                 await asyncStorageService.clearToken();
                 // window.location.href = "/login";
             } else return Promise.reject(error);

@@ -16,7 +16,7 @@ const AppContext = (props) => {
                     setUser(response.data.connectedUser)
                     setLoadingUser(false)
                 }).catch(err => {
-                    console.log(err)
+                    setLoadingUser(false)
                 })
 
         }
