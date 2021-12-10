@@ -43,12 +43,15 @@ const OfferDetails = (props) => {
                 <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
                     <View style={styles.titleSection}>
                         <Text style={styles.offerTitle}>{offer.name}</Text>
-                        {
-                            !context.user.savedOffers.map(o => o._id).includes(offer._id) ?
-                                <FontAwesome name="bookmark-o" size={30} color="#52BCF6" onPress={addOfferHandler} />
-                                :
-                                <FontAwesome name="bookmark" size={30} color="#52BCF6" onPress={removeOfferHandler} />
-                        }
+
+                        {context.user && <React.Fragment>
+                            {
+                                !context.user.savedOffers.map(o => o._id).includes(offer._id) ?
+                                    <FontAwesome name="bookmark-o" size={30} color="#52BCF6" onPress={addOfferHandler} />
+                                    :
+                                    <FontAwesome name="bookmark" size={30} color="#52BCF6" onPress={removeOfferHandler} />
+                            }
+                        </React.Fragment>}
                     </View>
                     <View>
                         <Text style={styles.companyName}>{offer.owner.name}</Text>
