@@ -39,14 +39,15 @@ const OfferDetails = (props) => {
     }
     if (offer)
         return (
+
             <View style={styles.container}>
                 <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
                     <View style={styles.titleSection}>
-                        <Text style={styles.offerTitle}>{offer.name}</Text>
+                        <Text style={styles.offerTitle}>{offer?.name}</Text>
 
                         {context.user && <React.Fragment>
                             {
-                                !context.user.savedOffers.map(o => o._id).includes(offer._id) ?
+                                !context.user.savedOffers.map(o => o._id).includes(offer?._id) ?
                                     <FontAwesome name="bookmark-o" size={30} color="#52BCF6" onPress={addOfferHandler} />
                                     :
                                     <FontAwesome name="bookmark" size={30} color="#52BCF6" onPress={removeOfferHandler} />
@@ -54,11 +55,13 @@ const OfferDetails = (props) => {
                         </React.Fragment>}
                     </View>
                     <View>
-                        <Text style={styles.companyName}>{offer.owner.name}</Text>
+                        <Text style={styles.companyName}
+                            onPress={() => props.navigation.navigate('Company', { companyId: offer?.owner?._id })}
+                        >{offer?.owner?.name}</Text>
                     </View>
                     <View style={styles.offerHighlights}>
                         <Feather name="map-pin" size={18} color="black" />
-                        <Text style={{ color: '#A7A7A7', marginHorizontal: 5 }}>{`${offer.city.country.name} ,${offer.city.name}`}</Text>
+                        <Text style={{ color: '#A7A7A7', marginHorizontal: 5 }}>{`${offer?.city?.country.name} ,${offer?.city?.name}`}</Text>
                     </View>
                     <View style={styles.navigationHeader}>
                         <View style={{ flex: 1, display: 'flex', justifyContent: 'center', flexDirection: 'row', paddingVertical: 15 }}>
@@ -73,7 +76,7 @@ const OfferDetails = (props) => {
                     </View>
                     <View style={styles.description}>
                         <Text style={{ color: '#909090' }}>
-                            {offer.jobDescription}
+                            {offer?.jobDescription}
                         </Text>
                     </View>
                     <View style={styles.section}>
