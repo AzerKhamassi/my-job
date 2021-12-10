@@ -2,14 +2,20 @@ import React from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import Constants from 'expo-constants';
 import NotificationCard from './NotificationCard/NotificationCard';
+import GlobalContext from '../../context/GlobalContext';
 
 const Notifications = () => {
+
+    const context = React.useContext(GlobalContext)
+    React.useEffect(() => {
+        context.markNotificationsAsRead();
+    }, [])
     return (
         <View style={styles.container}>
             <ScrollView contentInsetAdjustmentBehavior="never">
                 {
-                    [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-                        <NotificationCard key={i} />
+                    context.notifications.map((notification, i) => (
+                        <NotificationCard key={i} notification={notification} />
                     ))
                 }
             </ScrollView>

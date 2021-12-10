@@ -103,7 +103,8 @@ const Tabs = () => {
             }} />
             <Tab.Screen name='Notifications' component={NotificationsScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
-                    <FontAwesome style={focused && { transform: [{ rotate: '45deg' }] }} name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                    <FontAwesome style={focused && { transform: [{ rotate: '45deg' }] }}
+                        name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
                 ),
                 tabBarActiveTintColor: '#52BCF6',
                 tabBarBadge: getUnreadNotificationsLength(),

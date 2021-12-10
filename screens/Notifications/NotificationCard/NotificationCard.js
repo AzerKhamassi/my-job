@@ -3,20 +3,25 @@ import { Text, View, Image, StyleSheet } from 'react-native'
 import profileImage from '../../../assets/azer.jpg'
 
 const NotificationCard = (props) => {
-    return (
-        <View style={styles.card}>
-            <View>
-                <Image source={profileImage} style={styles.profileImage}></Image>
-            </View>
-            <View style={{ flex: 2 }}>
-                <Text>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.
-                </Text>
-                <Text style={styles.date}>2h</Text>
-            </View>
 
-        </View >
-    )
+    const [loadingNotification, setLoadingNotification] = React.useState(true)
+    if (!loadingNotification)
+
+        return (
+            <View style={styles.card}>
+                <View>
+                    <Image source={profileImage} style={styles.profileImage}></Image>
+                </View>
+                <View style={{ flex: 2 }}>
+                    <Text>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.
+                    </Text>
+                    <Text style={styles.date}>2h</Text>
+                </View>
+
+            </View >
+        )
+    return null
 }
 
 const styles = StyleSheet.create({

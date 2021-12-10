@@ -9,7 +9,6 @@ const AppContext = (props) => {
     const [notifications, setNotifications] = React.useState([])
 
     React.useEffect(async () => {
-        // await asyncStorageService.clearToken()
         const accessToken = await asyncStorageService.getAccessToken()
         if (accessToken) {
             axios.get(`/user/connected-user`)
