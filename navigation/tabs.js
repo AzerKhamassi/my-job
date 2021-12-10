@@ -62,7 +62,7 @@ const ProfileStackScreen = () => {
 
             }} />
             <SavedOffersStack.Screen name="Settings" component={SettingsScreen} options={{
-
+                animation: 'slide_from_right'
             }} />
         </SavedOffersStack.Navigator>
     );
@@ -72,7 +72,6 @@ const Tabs = () => {
 
     const context = React.useContext(GlobalContext)
     const getUnreadNotificationsLength = () => {
-
         return context.notifications.filter(notif => !notif.read).length
     }
     return (
