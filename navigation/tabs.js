@@ -72,8 +72,7 @@ const Tabs = () => {
 
     const context = React.useContext(GlobalContext)
     const getUnreadNotificationsLength = () => {
-        return 3
-        // return context.notifcations.filter(notif => !notif.read).length
+        return context.notifications.filter(notif => !notif.read).length
     }
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
