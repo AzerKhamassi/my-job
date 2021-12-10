@@ -28,19 +28,17 @@ const OfferCard = (props) => {
     return (
         <TouchableWithoutFeedback onPress={() => props.navigation.navigate('OfferDetails', { offerId: props.offer?._id })}>
             <View style={styles.card}>
-                <View style={styles.cardContent}>
+                {context.user && <View style={styles.cardContent}>
                     <Text style={styles.offerTitle}>{props.offer?.name}</Text>
 
-                    {context.user && <React.Fragment>
-                        {
-                            !context.user.savedOffers.map(o => o._id).includes(props.offer._id) ?
-                                <FontAwesome name="bookmark-o" size={20} color="#52BCF6" onPress={addOfferHandler} />
-                                :
-                                <FontAwesome name="bookmark" size={20} color="#52BCF6" onPress={removeOfferHandler} />
+                    {
+                        !context.user.savedOffers.map(o => o._id).includes(props.offer._id) ?
+                            <FontAwesome name="bookmark-o" size={20} color="#52BCF6" onPress={addOfferHandler} />
+                            :
+                            <FontAwesome name="bookmark" size={20} color="#52BCF6" onPress={removeOfferHandler} />
 
-                        }
-                    </React.Fragment>}
-                </View>
+                    }
+                </View>}
                 <View>
                     {props.offer && <Text style={styles.date}>
                         <FormatDate>

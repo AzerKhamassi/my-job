@@ -72,7 +72,8 @@ const ProfileStackScreen = () => {
     );
 }
 
-const Tabs = () => {
+
+const Tabs = (props) => {
 
     const context = React.useContext(GlobalContext)
     const getUnreadNotificationsLength = () => {
@@ -80,15 +81,27 @@ const Tabs = () => {
     }
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
-            <Tab.Screen name='Home' component={HomeStackScreen} options={{
-                tabBarIcon: ({ focused, color }) => (
-                    <FontAwesome name="home" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
-                ),
-                tabBarActiveTintColor: '#52BCF6',
-                headerShown: false
+            {
+                context.tabBarVisibility ?
+                    <Tab.Screen name='Home' component={HomeStackScreen} options={{
+                        tabBarIcon: ({ focused, color }) => (
+                            <FontAwesome name="home" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                        ),
+                        tabBarActiveTintColor: '#52BCF6',
+                        headerShown: false,
 
+                    }} />
+                    :
+                    <Tab.Screen name='Home' component={HomeStackScreen} options={{
+                        tabBarIcon: ({ focused, color }) => (
+                            <FontAwesome name="home" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                        ),
+                        tabBarActiveTintColor: '#52BCF6',
+                        headerShown: false,
+                        tabBarStyle: { display: 'none' }
 
-            }} />
+                    }} />
+            }
             <Tab.Screen name='SavedOffersStack' component={SavedOffersStackScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
                     <React.Fragment>
@@ -104,14 +117,25 @@ const Tabs = () => {
                 headerShown: false,
                 title: 'Saved Offers'
             }} />
-            <Tab.Screen name='Notifications' component={NotificationsScreen} options={{
-                tabBarIcon: ({ focused, color }) => (
-                    <FontAwesome style={focused && { transform: [{ rotate: '45deg' }] }}
-                        name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
-                ),
-                tabBarActiveTintColor: '#52BCF6',
-                tabBarBadge: getUnreadNotificationsLength(),
-            }} />
+            {
+                getUnreadNotificationsLength() ?
+                    <Tab.Screen name='Notifications' component={NotificationsScreen} options={{
+                        tabBarIcon: ({ focused, color }) => (
+                            <FontAwesome style={focused && { transform: [{ rotate: '40deg' }] }}
+                                name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                        ),
+                        tabBarActiveTintColor: '#52BCF6',
+                        tabBarBadge: getUnreadNotificationsLength(),
+                    }} /> :
+                    <Tab.Screen name='Notifications' component={NotificationsScreen} options={{
+                        tabBarIcon: ({ focused, color }) => (
+                            <FontAwesome style={focused && { transform: [{ rotate: '20deg' }] }}
+                                name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                        ),
+                        tabBarActiveTintColor: '#52BCF6',
+                    }} />
+            }
+
             <Tab.Screen name='Profile' component={ProfileStackScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
                     <FontAwesome name="user" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />

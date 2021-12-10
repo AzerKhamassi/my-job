@@ -7,6 +7,7 @@ const AppContext = (props) => {
     const [user, setUser] = React.useState(null)
     const [loadingUser, setLoadingUser] = React.useState(true)
     const [notifications, setNotifications] = React.useState([])
+    const [tabBarVisibility, setTabBarVisibility] = React.useState(true)
 
     React.useEffect(async () => {
         const accessToken = await asyncStorageService.getAccessToken()
@@ -35,7 +36,6 @@ const AppContext = (props) => {
     const removeUserSavedOffer = (offerId) => {
         console.log(offerId)
         console.log(user.savedOffers.map(o => o._id))
-
         setUser({
             ...user,
             savedOffers: [...user.savedOffers.filter(o => o._id !== offerId)]
@@ -58,7 +58,9 @@ const AppContext = (props) => {
                 removeUserSavedOffer,
                 addUserSavedOffer,
                 notifications,
-                markNotificationsAsRead
+                markNotificationsAsRead,
+                tabBarVisibility,
+                setTabBarVisibility
             }}
         >
             {!loadingUser && props.children}

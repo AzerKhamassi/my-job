@@ -16,7 +16,7 @@ import {
 import { EvilIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import OfferCard from '../../components/OfferCard/OfferCard'
-import CategoryCard from './components/CategoryCard';
+import CategoryCard from '../../components/CategoryCard/CategoryCard';
 import { CommonActions } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import SearchFilters from './components/SearchFilters';
@@ -25,31 +25,14 @@ import axios from '../../utlis/axios';
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+
+
 const Home = (props) => {
-    const refRBSheet = React.useRef();
-
     var offset = 0;
-    const onScrollHandler = (e) => {
-        const currentOffset = e.nativeEvent.contentOffset.y;
-        var direction = currentOffset > offset ? "down" : "up";
-        offset = currentOffset;
-        if (direction === "down") {
-            props.navigation.dispatch(
-                CommonActions.setParams({
-                    tabBarVisible: false,
-                })
-            );
-        } else {
-            props.navigation.dispatch(
-                CommonActions.setParams({
-                    tabBarVisible: true,
-                })
-            );
-        }
-    }
-
+    const refRBSheet = React.useRef();
     const [offers, setOffers] = React.useState(null)
     const context = React.useContext(GlobalContext)
+
     React.useEffect(() => {
         axios.get('/offer')
             .then(res => {
@@ -59,6 +42,20 @@ const Home = (props) => {
                 console.log(err)
             })
     }, [])
+
+
+    const onScrollHandler = (e) => {
+        const currentOffset = e.nativeEvent.contentOffset.y;
+        var direction = currentOffset > offset ? "down" : "up";
+        offset = currentOffset;
+        if (direction === "down") {
+            context.setTabBarVisibility(false)
+
+        } else {
+            context.setTabBarVisibility(true)
+        }
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
@@ -66,7 +63,6 @@ const Home = (props) => {
                     contentInsetAdjustmentBehavior="never"
                     showsVerticalScrollIndicator={false}
                     onScroll={(e) => onScrollHandler(e)}
-                    scrollEventThrottle={10}
                 >
                     <Pressable>
                         <View style={styles.searchSection}>
@@ -125,8 +121,22 @@ const Home = (props) => {
                         <View style={styles.offersSection}>
                             {
                                 offers?.map((offer, i) => (
-                                    <OfferCard key={i} offer={offer} navigation={props.navigation} />
-
+                                    <OfferCard
+                                        key={offer._id}
+                                        offer={offer}
+                                        name={offer?.name}
+                                        city={offer?.city}
+                                        jobDescription={offer?.jobDescription}
+                                        date={offer?.date}
+                                        tags={offer?.tags}
+                                        offerId={offer?._id}
+                                        isSavedOfferFunction={() => context.isSavedOfferHandler(offer._id)}
+                                        deleteSavedOfferFunction={() => context.deleteSavedOfferHandler(offer._id)}
+                                        saveOfferFunction={() => context.saveOfferHandler(offer._id)}
+                                        type={offer.type}
+                                        connectedUserId={context.user?._id}
+                                        navigation={props.navigation}
+                                    />
                                 ))
                             }
                         </View>
