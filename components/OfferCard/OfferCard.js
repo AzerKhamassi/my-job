@@ -17,7 +17,6 @@ const OfferCard = (props) => {
             })
     }
     const removeOfferHandler = () => {
-        console.log('no')
         axios.delete(`/user/saved/${props.offer._id}`, { offerId: props.offer._id })
             .then((res) => {
                 context.removeUserSavedOffer(props.offer._id)

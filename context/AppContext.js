@@ -6,6 +6,7 @@ import axios from '../utlis/axios'
 const AppContext = (props) => {
     const [user, setUser] = React.useState(null)
     const [loadingUser, setLoadingUser] = React.useState(true)
+    const [notifications, setNotifications] = React.useState([])
 
     React.useEffect(async () => {
         // await asyncStorageService.clearToken()
@@ -14,6 +15,7 @@ const AppContext = (props) => {
             axios.get(`/user/connected-user`)
                 .then(response => {
                     setUser(response.data.connectedUser)
+                    setNotifications(response.data.notifications)
                     setLoadingUser(false)
                 }).catch(err => {
                     setLoadingUser(false)
@@ -40,13 +42,24 @@ const AppContext = (props) => {
             savedOffers: [...user.savedOffers.filter(o => o._id !== offerId)]
         })
     }
+    const markNotificationsAsRead = () => {
+        axios.patch('/user/notifications')
+            .then(res => {
+                console.log('successfully updated')
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     return (
         <GlobalContext.Provider
             value={{
                 user,
                 setUser,
                 removeUserSavedOffer,
-                addUserSavedOffer
+                addUserSavedOffer,
+                notifications,
+                markNotificationsAsRead
             }}
         >
             {!loadingUser && props.children}

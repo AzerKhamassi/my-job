@@ -71,6 +71,9 @@ const ProfileStackScreen = () => {
 const Tabs = () => {
 
     const context = React.useContext(GlobalContext)
+    const getUnreadNotificationsLength = () => {
+        return context.notifcations.filter(notif => !notif.read).length
+    }
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
             <Tab.Screen name='Home' component={HomeStackScreen} options={{
@@ -102,7 +105,7 @@ const Tabs = () => {
                     <FontAwesome style={focused && { transform: [{ rotate: '45deg' }] }} name="bell" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
                 ),
                 tabBarActiveTintColor: '#52BCF6',
-                tabBarBadge: 3,
+                tabBarBadge: getUnreadNotificationsLength(),
             }} />
             <Tab.Screen name='Profile' component={ProfileStackScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
