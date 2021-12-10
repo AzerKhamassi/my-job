@@ -62,7 +62,7 @@ const ProfileStackScreen = () => {
 
             }} />
             <SavedOffersStack.Screen name="Settings" component={SettingsScreen} options={{
-
+                animation: 'slide_from_right'
             }} />
         </SavedOffersStack.Navigator>
     );
@@ -72,7 +72,8 @@ const Tabs = () => {
 
     const context = React.useContext(GlobalContext)
     const getUnreadNotificationsLength = () => {
-        return context.notifcations.filter(notif => !notif.read).length
+        return 3
+        // return context.notifcations.filter(notif => !notif.read).length
     }
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
