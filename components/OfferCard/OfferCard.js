@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
-import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import FormatDate from '../../utlis/FormatDate';
 import GlobalContext from '../../context/GlobalContext';
 import axios from '../../utlis/axios'
@@ -34,9 +34,9 @@ const OfferCard = (props) => {
 
                     {
                         !context.user.savedOffers.map(o => o._id).includes(props.offer._id) ?
-                            <Feather name="bookmark" size={20} color="#52BCF6" onPress={addOfferHandler} />
+                            <FontAwesome name="bookmark-o" size={20} color="#52BCF6" onPress={addOfferHandler} />
                             :
-                            <Feather name="bookmark" size={20} color="#990000" onPress={removeOfferHandler} />
+                            <FontAwesome name="bookmark" size={20} color="#52BCF6" onPress={removeOfferHandler} />
 
                     }
                 </View>

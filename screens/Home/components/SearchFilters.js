@@ -26,7 +26,7 @@ const SearchFilters = (props) => {
 
 const styles = StyleSheet.create({
     input: {
-        paddingHorizontal: 40,
+        paddingHorizontal: 20,
         paddingVertical: 15,
         marginVertical: 10,
         width: 300,

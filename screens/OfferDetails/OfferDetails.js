@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableHighlight, ScrollView } from 'react-native'
 import Constants from 'expo-constants';
-import { Foundation } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import OfferCard from '../../components/OfferCard/OfferCard';
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext'
+import { FontAwesome } from '@expo/vector-icons';
 const OfferDetails = (props) => {
 
     const [offer, setOffer] = React.useState(null)
@@ -29,7 +29,6 @@ const OfferDetails = (props) => {
             })
     }
     const removeOfferHandler = () => {
-        console.log('no')
         axios.delete(`/user/saved/${offer._id}`, { offerId: offer._id })
             .then((res) => {
                 context.removeUserSavedOffer(offer._id)
@@ -46,9 +45,9 @@ const OfferDetails = (props) => {
                         <Text style={styles.offerTitle}>{offer.name}</Text>
                         {
                             !context.user.savedOffers.map(o => o._id).includes(offer._id) ?
-                                <Foundation name="bookmark" size={30} color="#52BCF6" onPress={addOfferHandler} />
+                                <FontAwesome name="bookmark-o" size={30} color="#52BCF6" onPress={addOfferHandler} />
                                 :
-                                <Foundation name="bookmark" size={30} color="#990000" onPress={removeOfferHandler} />
+                                <FontAwesome name="bookmark" size={30} color="#52BCF6" onPress={removeOfferHandler} />
                         }
                     </View>
                     <View>

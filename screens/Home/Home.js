@@ -20,10 +20,11 @@ import CategoryCard from './components/CategoryCard';
 import { CommonActions } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import SearchFilters from './components/SearchFilters';
+import GlobalContext from '../../context/GlobalContext'
+import axios from '../../utlis/axios';
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
-
 const Home = (props) => {
     const refRBSheet = React.useRef();
 
@@ -93,7 +94,8 @@ const Home = (props) => {
                                             backgroundColor: "#000"
                                         },
                                         container: {
-                                            borderRadius: 20,
+                                            borderTopRightRadius: 20,
+                                            borderTopLeftRadius: 20,
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',

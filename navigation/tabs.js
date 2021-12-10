@@ -13,6 +13,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 import logo from '../assets/my-job.png'
 import { AntDesign } from '@expo/vector-icons';
 import SettingsScreen from '../screens/Settings/Settings';
+import GlobalContext from '../context/GlobalContext';
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -68,6 +69,8 @@ const ProfileStackScreen = () => {
 }
 
 const Tabs = () => {
+
+    const context = React.useContext(GlobalContext)
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
             <Tab.Screen name='Home' component={HomeStackScreen} options={{
@@ -81,7 +84,14 @@ const Tabs = () => {
             }} />
             <Tab.Screen name='SavedOffersStack' component={SavedOffersStackScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
-                    <Foundation name="bookmark" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                    <React.Fragment>
+                        {
+                            context.user?.savedOffers.length > 0 ?
+                                <FontAwesome name="bookmark" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} /> :
+                                <FontAwesome name="bookmark-o" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                        }
+                    </React.Fragment>
+
                 ),
                 tabBarActiveTintColor: '#52BCF6',
                 headerShown: false,
