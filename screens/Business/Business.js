@@ -29,27 +29,7 @@ const Business = (props) => {
 
     return (
         <View style={styles.container}>
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={{ width: layout.width }}
-                tabStyle={{ backgroundColor: 'green', }}
-                renderTabBar={(props) => <TabBar
-                    style={{ backgroundColor: 'white' }}
-                    {...props}
-                    renderLabel={({ route, focused, color }) => (
-                        <Text style={{ color: 'black', margin: 8 }}>
-                            {route.title}
-                        </Text>
-                    )}
-                    indicatorStyle={{
-                        backgroundColor: '#F6931E',
-                        height: 2,
-                    }}
-
-                />}
-            />
+            <AddOffer />
         </View>
     )
 }

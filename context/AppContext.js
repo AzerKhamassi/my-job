@@ -103,7 +103,6 @@ const AppContext = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red'
     },
     image: {
         height: '100%',
