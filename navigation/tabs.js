@@ -74,34 +74,21 @@ const ProfileStackScreen = () => {
 
 
 const Tabs = (props) => {
-
     const context = React.useContext(GlobalContext)
     const getUnreadNotificationsLength = () => {
         return context.notifications.filter(notif => !notif.read).length
     }
     return (
         <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
-            {
-                context.tabBarVisibility ?
-                    <Tab.Screen name='Home' component={HomeStackScreen} options={{
-                        tabBarIcon: ({ focused, color }) => (
-                            <FontAwesome name="home" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
-                        ),
-                        tabBarActiveTintColor: '#52BCF6',
-                        headerShown: false,
+            <Tab.Screen name='Home' component={HomeStackScreen} options={{
+                tabBarIcon: ({ focused, color }) => (
+                    <FontAwesome name="home" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                ),
+                tabBarActiveTintColor: '#52BCF6',
+                headerShown: false,
+                tabBarStyle: { display: context.tabBarVisibility ? 'flex' : 'none' }
 
-                    }} />
-                    :
-                    <Tab.Screen name='Home' component={HomeStackScreen} options={{
-                        tabBarIcon: ({ focused, color }) => (
-                            <FontAwesome name="home" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
-                        ),
-                        tabBarActiveTintColor: '#52BCF6',
-                        headerShown: false,
-                        tabBarStyle: { display: 'none' }
-
-                    }} />
-            }
+            }} />
             <Tab.Screen name='SavedOffersStack' component={SavedOffersStackScreen} options={{
                 tabBarIcon: ({ focused, color }) => (
                     <React.Fragment>

@@ -63,6 +63,7 @@ const Home = (props) => {
                     contentInsetAdjustmentBehavior="never"
                     showsVerticalScrollIndicator={false}
                     onScroll={(e) => onScrollHandler(e)}
+                    scrollEventThrottle={0}
                 >
                     <Pressable>
                         <View style={styles.searchSection}>

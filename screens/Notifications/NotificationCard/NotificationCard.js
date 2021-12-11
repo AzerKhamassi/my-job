@@ -9,15 +9,12 @@ const NotificationCard = (props) => {
     const [notificationContent, setNotifictionContent] = React.useState(null)
     const [notificationImage, setNotificationImage] = React.useState(null)
 
-    React.useEffect(() => {
-        console.log(props.notification)
-    })
+
     React.useEffect(() => {
         let _notificationContent = ''
         const notificationVariables = JSON.parse(props.notification.variables)
         switch (props.notification.type) {
             case 'appliedOffer':
-                console.log(notificationVariables.user.profileImage)
                 _notificationContent = `${notificationVariables.user.firstName} ${notificationVariables.user.lastName} has applied to ${notificationVariables.offer.name}`
                 setNotificationImage(notificationVariables.user.profileImage)
 
