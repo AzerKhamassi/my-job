@@ -15,6 +15,7 @@ import { AntDesign } from '@expo/vector-icons';
 import SettingsScreen from '../screens/Settings/Settings';
 import GlobalContext from '../context/GlobalContext';
 import Company from '../screens/Company/Company';
+import Business from '../screens/Business/Business';
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -38,6 +39,9 @@ const HomeStackScreen = () => {
                 title: 'Offer Details',
             }} />
             <HomeStack.Screen name="Company" component={Company} options={{
+
+            }} />
+            <HomeStack.Screen name="Business" component={Business} options={{
 
             }} />
         </HomeStack.Navigator>

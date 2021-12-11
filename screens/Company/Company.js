@@ -8,6 +8,10 @@ import CategoryCard from '../../components/CategoryCard/CategoryCard';
 import OfferCard from '../../components/OfferCard/OfferCard';
 import GlobalContext from '../../context/GlobalContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+
+
 const Company = (props) => {
     const [longitude, setLongitude] = React.useState(10.618040611648018)
     const [latitude, setLatitude] = React.useState(36.843400794030224)
@@ -42,6 +46,14 @@ const Company = (props) => {
                     showsVerticalScrollIndicator={false}
                 >
                     <Pressable>
+                        <View style={styles.settings}>
+                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Business')}>
+                                <FontAwesome name="building-o" size={24} color="black" />
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
+                                <Feather name="settings" size={24} color="black" />
+                            </TouchableWithoutFeedback>
+                        </View>
                         <View style={styles.imageContainer}>
                             <Image source={{ uri: company?.profileImage }} style={styles.profileImage}></Image>
 
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        paddingTop: 5,
+        paddingTop: 20,
         flexDirection: 'row'
     },
 
@@ -234,7 +246,13 @@ const styles = StyleSheet.create({
     offersContainer: {
         marginHorizontal: 25,
 
-    }
+    },
+    settings: {
+        display: 'flex',
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        justifyContent: 'space-between'
+    },
 })
 
 

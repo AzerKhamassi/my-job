@@ -13,6 +13,7 @@ import asyncStorageService from '../../utlis/asyncStorageService';
 
 
 const SETTINGS_ITEMS = [
+
     {
         name: 'Notifications',
         icon: <SimpleLineIcons name="bell" size={24} color="black" />
@@ -40,7 +41,8 @@ const SETTINGS_ITEMS = [
     {
         name: 'About',
         icon: <Feather name="info" size={24} color="black" />
-    }
+    },
+
 ]
 
 const Settings = (props) => {
