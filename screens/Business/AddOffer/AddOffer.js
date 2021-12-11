@@ -8,9 +8,8 @@ import {
     Keyboard,
     Pressable,
     TouchableHighlight,
-    ToastAndroid,
     Platform,
-    AlertIOS,
+    KeyboardAvoidingView
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
@@ -56,120 +55,132 @@ const AddOffer = (props) => {
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={styles.container}>
-                <ScrollView
-                    contentInsetAdjustmentBehavior="never"
-                    showsVerticalScrollIndicator={false}>
-                    <Pressable>
-                        <View style={{ display: 'flex', }}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder='Name'
-                                value={name}
-                                onChangeText={(text) => setName(text)} />
-                            <TextInput
-                                style={styles.inputDescription}
-                                multiline={true}
-                                numberOfLines={5}
-                                value={description}
-                                onChangeText={(text) => setDescription(text)}
-                                placeholder='Description' />
-                            <TextInput
-                                style={styles.input}
-                                value={type}
-                                onChangeText={(text) => setType(text)}
-                                placeholder='Type Internship-CDI...' />
-                        </View>
-                        <View style={{ paddingHorizontal: 10 }}>
-                            <Text>Duration</Text>
-                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'position' : ''}>
+                <View >
+                    <ScrollView
+                        contentInsetAdjustmentBehavior="never"
+                        showsVerticalScrollIndicator={false}>
+                        <Pressable>
+                            <View style={{ display: 'flex', }}>
                                 <TextInput
-                                    style={styles.inputDuration}
-                                    keyboardType='numeric'
-                                    placeholder='From'
-                                    onChangeText={(text) => setDuration({ ...duration, from: text })}
-                                    value={duration.from} />
+                                    style={styles.input}
+                                    placeholder='Name'
+                                    value={name}
+                                    onChangeText={(text) => setName(text)} />
                                 <TextInput
-                                    style={styles.inputDuration}
-                                    keyboardType='numeric'
-                                    placeholder='To'
-                                    onChangeText={(text) => setDuration({ ...duration, to: text })}
-                                    value={duration.to} />
+                                    style={styles.inputDescription}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    value={description}
+                                    onChangeText={(text) => setDescription(text)}
+                                    placeholder='Description' />
+                                <TextInput
+                                    style={styles.input}
+                                    value={type}
+                                    onChangeText={(text) => setType(text)}
+                                    placeholder='Type Internship-CDI...' />
                             </View>
-                            <View >
-                                <Text style={{ marginVertical: 10 }}>City</Text>
-                                <RNPickerSelect
-                                    style={{ viewContainer: { backgroundColor: '#F3F5F9', borderRadius: 20 } }}
-                                    onValueChange={(value) => console.log(value)}
-                                    items={[
-                                        { label: 'Football', value: 'football' },
-                                        { label: 'Baseball', value: 'baseball' },
-                                        { label: 'Hockey', value: 'hockey' },
-                                    ]}
-                                />
+                            <View style={{ paddingHorizontal: 10 }}>
+                                <Text>Duration</Text>
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <TextInput
+                                        style={styles.inputDuration}
+                                        keyboardType='numeric'
+                                        placeholder='From'
+                                        onChangeText={(text) => setDuration({ ...duration, from: text })}
+                                        value={duration.from} />
+                                    <TextInput
+                                        style={styles.inputDuration}
+                                        keyboardType='numeric'
+                                        placeholder='To'
+                                        onChangeText={(text) => setDuration({ ...duration, to: text })}
+                                        value={duration.to} />
+                                </View>
+                                <View >
+                                    <Text style={{ marginVertical: 10 }}>City</Text>
+                                    <RNPickerSelect
+                                        style={{
+                                            viewContainer: {
+                                                backgroundColor: '#F3F5F9', borderRadius: 20,
+                                                padding: Platform.OS === 'ios' ? 15 : 0
+                                            }
+                                        }}
+                                        onValueChange={(value) => console.log(value)}
+                                        items={[
+                                            { label: 'Football', value: 'football' },
+                                            { label: 'Baseball', value: 'baseball' },
+                                            { label: 'Hockey', value: 'hockey' },
+                                        ]}
+                                    />
+                                </View>
+                                <View>
+                                    <Text style={{ marginVertical: 10 }}>Category</Text>
+                                    <RNPickerSelect
+                                        style={{
+                                            viewContainer: {
+                                                backgroundColor: '#F3F5F9', borderRadius: 20,
+                                                padding: Platform.OS === 'ios' ? 15 : 0
+                                            }
+                                        }}
+                                        onValueChange={(value) => console.log(value)}
+                                        items={[
+                                            { label: 'Football', value: 'football' },
+                                            { label: 'Baseball', value: 'baseball' },
+                                            { label: 'Hockey', value: 'hockey' },
+                                        ]}
+                                    />
+                                </View>
+                                <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <TextInput style={styles.inputTag} placeholder='Tag' value={tag} onChangeText={(text) => setTag(text)} />
+                                    <TouchableHighlight
+                                        onPress={() => {
+                                            setTags([...tags, { name: tag }])
+                                            setTag('')
+                                        }}
+                                        underlayColor='#52BCF6'
+                                        style={styles.addButton}>
+                                        <Ionicons name="add-circle-outline" size={24} color="white" />
+                                    </TouchableHighlight>
+                                </View>
+                                <View style={styles.tagsContainer}>
+
+                                    {
+                                        tags.map((tag, i) => (
+                                            <Text style={styles.tag} key={i}>{tag.name}</Text>
+                                        ))
+                                    }
+                                </View>
                             </View>
-                            <View>
-                                <Text style={{ marginVertical: 10 }}>Category</Text>
-                                <RNPickerSelect
-                                    style={{ viewContainer: { backgroundColor: '#F3F5F9', borderRadius: 20 } }}
-                                    onValueChange={(value) => console.log(value)}
-                                    items={[
-                                        { label: 'Football', value: 'football' },
-                                        { label: 'Baseball', value: 'baseball' },
-                                        { label: 'Hockey', value: 'hockey' },
-                                    ]}
-                                />
-                            </View>
-                            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                <TextInput style={styles.inputTag} placeholder='Tag' value={tag} onChangeText={(text) => setTag(text)} />
+                            <View style={{ display: 'flex', alignItems: 'center' }}>
+
                                 <TouchableHighlight
-                                    onPress={() => {
-                                        setTags([...tags, { name: tag }])
-                                        setTag('')
-                                    }}
                                     underlayColor='#52BCF6'
-                                    style={styles.addButton}>
-                                    <Ionicons name="add-circle-outline" size={24} color="white" />
+                                    style={styles.applyButton}
+                                    onPress={() => { addOfferHandler() }}>
+                                    <Text style={styles.buttonText}>Add Offer</Text>
                                 </TouchableHighlight>
+                                <AwesomeAlert
+                                    show={showAlert}
+                                    showProgress={false}
+                                    title="Done"
+                                    message="Offer added successfully!"
+                                    closeOnTouchOutside={true}
+                                    closeOnHardwareBackPress={false}
+                                    cancelText="No, cancel"
+                                    confirmButtonColor="#DD6B55"
+                                    onDismiss={() => setShowAlert(false)}
+                                    onCancelPressed={() => {
+                                        setShowAlert(false);
+                                    }}
+                                    onConfirmPressed={() => {
+                                        setShowAlert(false);
+                                    }}
+                                />
                             </View>
-                            <View style={styles.tagsContainer}>
-
-                                {
-                                    tags.map((tag, i) => (
-                                        <Text style={styles.tag} key={i}>{tag.name}</Text>
-                                    ))
-                                }
-                            </View>
-                        </View>
-                        <View style={{ display: 'flex', alignItems: 'center' }}>
-
-                            <TouchableHighlight
-                                underlayColor='#52BCF6'
-                                style={styles.applyButton}
-                                onPress={() => { addOfferHandler() }}>
-                                <Text style={styles.buttonText}>Add Offer</Text>
-                            </TouchableHighlight>
-                            <AwesomeAlert
-                                show={showAlert}
-                                showProgress={false}
-                                title="Done"
-                                message="Offer added successfully!"
-                                closeOnTouchOutside={true}
-                                closeOnHardwareBackPress={false}
-                                cancelText="No, cancel"
-                                confirmButtonColor="#DD6B55"
-                                onDismiss={() => setShowAlert(false)}
-                                onCancelPressed={() => {
-                                    setShowAlert(false);
-                                }}
-                                onConfirmPressed={() => {
-                                    setShowAlert(false);
-                                }}
-                            />
-                        </View>
-                    </Pressable>
-                </ScrollView>
-            </View>
+                        </Pressable>
+                    </ScrollView>
+                </View>
+            </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     )
 }
@@ -177,8 +188,7 @@ const AddOffer = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#F8F8FA',
-        backgroundColor: 'red',
+        backgroundColor: '#F8F8FA',
         paddingVertical: 5,
         alignItems: 'center',
         // paddingHorizontal: 25
@@ -187,7 +197,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         marginVertical: 10,
-        width: 300,
+        width: 320,
         borderRadius: 25,
         backgroundColor: '#F3F5F9',
 
@@ -195,12 +205,13 @@ const styles = StyleSheet.create({
     inputDescription: {
         paddingHorizontal: 20,
         marginVertical: 10,
-        width: 300,
+        width: 320,
         borderRadius: 25,
         backgroundColor: '#F3F5F9',
         ...Platform.select({
             ios: {
-                paddingVertical: 15
+                paddingBottom: 45,
+                paddingTop: 15
             },
             android: {
 

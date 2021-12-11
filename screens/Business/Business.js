@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet, Text, useWindowDimensions } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import AddOffer from './AddOffer/AddOffer';
+import Offers from './Offers/Offers';
 
 
 const FirstRoute = () => (
@@ -29,7 +30,8 @@ const Business = (props) => {
 
     return (
         <View style={styles.container}>
-            <AddOffer />
+            <Offers />
+            {/* <AddOffer /> */}
         </View>
     )
 }
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        flexDirection: 'row'
     },
 })
 

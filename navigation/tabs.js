@@ -90,7 +90,7 @@ const Tabs = (props) => {
                 ),
                 tabBarActiveTintColor: '#52BCF6',
                 headerShown: false,
-                // tabBarStyle: { display: context.tabBarVisibility ? 'flex' : 'none' }
+                tabBarStyle: { display: context.tabBarVisibility ? 'flex' : 'none' }
 
             }} />
             <Tab.Screen name='SavedOffersStack' component={SavedOffersStackScreen} options={{
