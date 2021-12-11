@@ -2,13 +2,54 @@ import React from 'react'
 import asyncStorageService from '../utlis/asyncStorageService'
 import GlobalContext from './GlobalContext'
 import axios from '../utlis/axios'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import * as Notifications from 'expo-notifications';
+import { View, StyleSheet, Image } from 'react-native'
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+
 
 const AppContext = (props) => {
     const [user, setUser] = React.useState(null)
     const [loadingUser, setLoadingUser] = React.useState(true)
     const [notifications, setNotifications] = React.useState([])
     const [tabBarVisibility, setTabBarVisibility] = React.useState(true)
+
+    const notificationListener = React.useRef();
+
+
+
+
+    React.useEffect(() => {
+        if (user) {
+            registerForPushNotificationsAsync().then(token => {
+                axios.patch('/user/notification-token', { token })
+                    .then(res => {
+                        console.log(token)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+
+            });
+
+            notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+                const newNotification = notification.request.content.data
+                setNotifications((_notifications) => {
+                    return [..._notifications, newNotification]
+                });
+            });
+
+            return () => {
+                Notifications.removeNotificationSubscription(notificationListener.current);
+            };
+        }
+    }, [user]);
 
     React.useEffect(async () => {
         await refreshUser()
@@ -74,6 +115,36 @@ const AppContext = (props) => {
         }
 
     }
+
+    const registerForPushNotificationsAsync = async () => {
+        let token;
+
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log('token', token);
+
+
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+
+        return token;
+    }
+
     return (
         <GlobalContext.Provider
             value={{
