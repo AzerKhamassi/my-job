@@ -17,6 +17,9 @@ const OfferDetails = (props) => {
                 setOffer(res.data.offer)
                 setRelatedOffers(res.data.relatedOffers)
             })
+            .catch(err => {
+                context.errorOccured(err)
+            })
     }, [])
 
     const addOfferHandler = () => {
@@ -25,7 +28,7 @@ const OfferDetails = (props) => {
                 context.addUserSavedOffer(offer)
             })
             .catch(err => {
-                console.log(err)
+                context.errorOccured(err)
             })
     }
     const removeOfferHandler = () => {
@@ -34,7 +37,7 @@ const OfferDetails = (props) => {
                 context.removeUserSavedOffer(offer._id)
             })
             .catch(err => {
-                console.log(err)
+                context.errorOccured(err)
             })
     }
     if (offer)

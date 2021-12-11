@@ -36,7 +36,7 @@ const Company = (props) => {
                 setCategories(_categories)
                 setCompany(res.data.client)
             }).catch(err => {
-                console.log(err)
+                context.errorOccured(err)
             })
     }, [])
     if (company)

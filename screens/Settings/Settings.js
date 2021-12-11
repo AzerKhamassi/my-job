@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import logo from '../../assets/my-job.png'
 import asyncStorageService from '../../utlis/asyncStorageService';
+import GlobalContext from '../../context/GlobalContext';
 
 
 const SETTINGS_ITEMS = [
@@ -47,10 +48,9 @@ const SETTINGS_ITEMS = [
 
 const Settings = (props) => {
 
-    const logoutHandler = () => {
-        asyncStorageService.clearToken().then(() => {
-            // props.navigation.replace('Login')
-        })
+    const context = React.useContext(GlobalContext)
+    const logoutHandler = async () => {
+        await context.logoutUser()
     }
 
     return (

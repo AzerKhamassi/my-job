@@ -2,6 +2,7 @@ import React from 'react'
 import asyncStorageService from '../utlis/asyncStorageService'
 import GlobalContext from './GlobalContext'
 import axios from '../utlis/axios'
+import { View, Text, StyleSheet, Image } from 'react-native'
 
 const AppContext = (props) => {
     const [user, setUser] = React.useState(null)
@@ -10,22 +11,37 @@ const AppContext = (props) => {
     const [tabBarVisibility, setTabBarVisibility] = React.useState(true)
 
     React.useEffect(async () => {
+        await refreshUser()
+
+    }, [])
+    const refreshUser = async () => {
+        setLoadingUser(true)
         const accessToken = await asyncStorageService.getAccessToken()
-        if (accessToken) {
+        if (accessToken)
             axios.get(`/user/connected-user`)
                 .then(response => {
                     setUser(response.data.connectedUser)
                     setNotifications(response.data.notifications)
                     setLoadingUser(false)
-                }).catch(err => {
-                    setLoadingUser(false)
-                })
 
-        }
-        else {
+                }).catch(err => {
+                    setUser(null)
+                    setLoadingUser(false)
+
+                    console.log(err)
+                })
+        else
             setLoadingUser(false)
-        }
-    }, [])
+
+
+    }
+
+    const logoutUser = async () => {
+        setLoadingUser(true)
+        await asyncStorageService.clearToken()
+        setUser(null)
+        setLoadingUser(false)
+    }
     const addUserSavedOffer = (offer) => {
         console.log(user.savedOffers.map(o => o._id))
         setUser({
@@ -50,6 +66,14 @@ const AppContext = (props) => {
                 console.log(err)
             })
     }
+    const errorOccured = () => {
+        if (err.response.status === 403) {
+            setLoadingUser(true)
+            setUser(null)
+            setLoadingUser(false)
+        }
+
+    }
     return (
         <GlobalContext.Provider
             value={{
@@ -60,12 +84,31 @@ const AppContext = (props) => {
                 notifications,
                 markNotificationsAsRead,
                 tabBarVisibility,
-                setTabBarVisibility
+                setTabBarVisibility,
+                refreshUser,
+                logoutUser,
+                errorOccured
             }}
         >
-            {!loadingUser && props.children}
+            {!loadingUser ? props.children
+                :
+                <View style={styles.container}>
+                    <Image style={styles.image} source={require('../assets/splash.png')}></Image>
+                </View>
+            }
         </GlobalContext.Provider>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'red'
+    },
+    image: {
+        height: '100%',
+        width: '100%'
+    },
+})
 
 export default AppContext

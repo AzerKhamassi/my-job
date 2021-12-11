@@ -18,6 +18,7 @@ import asyncStorageService from '../../utlis/asyncStorageService'
 
 const Login = (props) => {
     const context = React.useContext(GlobalContext);
+    const [loading, setLoading] = React.useState(true)
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [errMessage, setErrMessage] = React.useState(false)
@@ -25,6 +26,8 @@ const Login = (props) => {
     React.useEffect(() => {
         if (context.user)
             props.navigation.replace('Tabs')
+        else
+            setLoading(false)
     }, [])
     const loginHandler = () => {
         axios.post('/user/login', {
@@ -32,6 +35,7 @@ const Login = (props) => {
             password
         }).then(async (response) => {
             await asyncStorageService.setAccessToken(response.data.accessToken)
+            context.refreshUser()
             props.navigation.replace('Tabs')
 
         }).catch(err => {
@@ -42,57 +46,60 @@ const Login = (props) => {
 
     }
 
-    return (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
-            <View style={styles.container}>
-                <View style={styles.logoContainer}>
-                    <Image source={logo} style={styles.logo}></Image>
-                </View>
-                <View>
-                    <TextInput placeholder='Email'
-                        style={styles.input}
-                        value={email}
-                        onChangeText={(text) => setEmail(text)}
-                        onFocus={() => setErrMessage(false)}
-                    />
-                    <TextInput placeholder='Password'
-                        style={styles.input}
-                        secureTextEntry={true}
-                        value={password}
-                        onChangeText={(text) => setPassword(text)}
-                        onFocus={() => setErrMessage(false)}
-                    />
-                </View>
-                <View style={styles.forgotPaswword}>
-                    <Text>Forgot password?</Text>
-                </View>
-                {
-                    errMessage &&
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorMessage}>
-                            Incorrect email or password!
+
+    if (!loading)
+        return (
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
+                <View style={styles.container}>
+                    <View style={styles.logoContainer}>
+                        <Image source={logo} style={styles.logo}></Image>
+                    </View>
+                    <View>
+                        <TextInput placeholder='Email'
+                            style={styles.input}
+                            value={email}
+                            onChangeText={(text) => setEmail(text)}
+                            onFocus={() => setErrMessage(false)}
+                        />
+                        <TextInput placeholder='Password'
+                            style={styles.input}
+                            secureTextEntry={true}
+                            value={password}
+                            onChangeText={(text) => setPassword(text)}
+                            onFocus={() => setErrMessage(false)}
+                        />
+                    </View>
+                    <View style={styles.forgotPaswword}>
+                        <Text>Forgot password?</Text>
+                    </View>
+                    {
+                        errMessage &&
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorMessage}>
+                                Incorrect email or password!
+                            </Text>
+                        </View>
+                    }
+                    <View >
+                        <TouchableHighlight
+                            underlayColor='#52BCF6'
+                            style={styles.loginButton}
+                            onPress={() => { loginHandler() }}>
+                            <Text style={styles.buttonText}>Sign in</Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View>
+                        <Text>
+                            Don't have an account?
+                            <Text
+                                onPress={() => props.navigation.navigate('Signup')}
+                                style={styles.signupLink}> Sign up</Text>
                         </Text>
                     </View>
-                }
-                <View >
-                    <TouchableHighlight
-                        underlayColor='#52BCF6'
-                        style={styles.loginButton}
-                        onPress={() => { loginHandler() }}>
-                        <Text style={styles.buttonText}>Sign in</Text>
-                    </TouchableHighlight>
                 </View>
-                <View>
-                    <Text>
-                        Don't have an account?
-                        <Text
-                            onPress={() => props.navigation.navigate('Signup')}
-                            style={styles.signupLink}> Sign up</Text>
-                    </Text>
-                </View>
-            </View>
-        </TouchableWithoutFeedback>
-    )
+            </TouchableWithoutFeedback>
+        )
+    return null
 }
 
 const styles = StyleSheet.create({

@@ -13,7 +13,7 @@ const OfferCard = (props) => {
                 context.addUserSavedOffer(props.offer)
             })
             .catch(err => {
-                console.log(err)
+                context.errorOccured(err)
             })
     }
     const removeOfferHandler = () => {
@@ -22,7 +22,7 @@ const OfferCard = (props) => {
                 context.removeUserSavedOffer(props.offer._id)
             })
             .catch(err => {
-                console.log(err)
+                context.errorOccured(err)
             })
     }
     return (

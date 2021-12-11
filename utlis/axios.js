@@ -50,7 +50,6 @@ axiosInstance.interceptors.response.use(
             } else if (error.response.status === 403) {
                 console.log('no access allowed')
                 await asyncStorageService.clearToken();
-                // window.location.href = "/login";
             } else return Promise.reject(error);
         else return Promise.reject(error);
     }
