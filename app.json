@@ -4,7 +4,12 @@
     "slug": "my-job",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-my-jobs.png",
+    "notification": {
+        "icon": "./assets/icon-my-jobs.png",
+        "androidMode": "default",
+        "iosDisplayInForeground": true
+    },  
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,9 +29,21 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
-    },
+    },    
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+        [
+          "expo-notifications",
+          {
+            "icon": "./assets/my-job.png",
+            "color": "#ffffff",
+            "sounds": [
+              "./assets/audio/notification-sound.wav"
+            ]
+          }
+        ]
+      ]
   }
 }
