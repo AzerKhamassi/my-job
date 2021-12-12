@@ -18,8 +18,9 @@ const logo = require("../../assets/my-job.png");
 import ToggleSwitch from 'toggle-switch-react-native'
 import { Ionicons } from '@expo/vector-icons';
 import axios from '../../utlis/axios';
-import profileImage from '../../assets/azer.jpg'
+import profileImage from '../../assets/user.png'
 import { AntDesign } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker'
 
 
 const Signup = () => {
@@ -34,7 +35,47 @@ const Signup = () => {
     const [phone, setPhone] = React.useState('')
     const [address, setAddress] = React.useState('')
     const [errMessage, setErrMessage] = React.useState(false)
+    const [responseCamera, setResponseCamera] = React.useState(null)
+    const [responseGallery, setResponseGallery] = React.useState(null)
+    const [image, setImage] = React.useState(null);
+    const pickImageHandler = async () => {
+        const result = await launchCamera({ mediaType: 'photo' })
+        console.log(result)
+    }
 
+    React.useEffect(() => {
+        axios
+            .get('/location/country')
+            .then((res) => {
+                // console.log(res.data.countries)
+                // setCountries(res.data.countries);
+            })
+            .catch((err) => {
+                console.log({ err });
+            });
+    }, []);
+    React.useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+    }, []);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+    };
 
     const registerHandler = () => {
         if (password.trim() === repassword.trim()) {
@@ -77,18 +118,20 @@ const Signup = () => {
                         </View>
                         <View>
                             <View style={styles.imageContainer}>
-                                <Image source={profileImage} style={styles.profileImage}></Image>
+                                <Image source={image ? { uri: image } : profileImage} style={styles.profileImage}></Image>
 
-                                <View style={styles.editIcon}>
-                                    <AntDesign name="camera" size={14} color="white" />
+                                <View style={{ ...styles.editIcon, backgroundColor: toggle ? '#F6931E' : '#52BCF6' }}>
+                                    <TouchableWithoutFeedback onPress={pickImage}>
+                                        <AntDesign name="camera" size={14} color="white" />
+                                    </TouchableWithoutFeedback>
                                 </View>
                             </View>
                             <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                                 <Text>Company</Text>
                                 <ToggleSwitch
                                     isOn={toggle}
-                                    onColor="#52BCF6"
-                                    offColor="#F6931E"
+                                    offColor="#52BCF6"
+                                    onColor="#F6931E"
                                     labelStyle={{ color: "black", fontWeight: "900" }}
                                     size="large"
                                     onToggle={isOn => setToggle(isOn)}
@@ -142,7 +185,7 @@ const Signup = () => {
                         <View>
                             <TouchableHighlight
                                 underlayColor='#52BCF6'
-                                style={{ ...styles.signupButton, backgroundColor: toggle ? '#52BCF6' : '#F6931E', }}
+                                style={{ ...styles.signupButton, backgroundColor: toggle ? '#F6931E' : '#52BCF6', }}
                                 onPress={() => registerHandler()}>
                                 <Text style={styles.buttonText}>Sign up</Text>
                             </TouchableHighlight>
@@ -187,7 +230,19 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: 280,
         borderRadius: 25,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        ...Platform.select({
+            ios: {
+                paddingBottom: 45,
+                paddingTop: 15
+            },
+            android: {
+
+            },
+            default: {
+
+            }
+        })
     },
     forgotPaswword: {
         width: 280,
@@ -207,7 +262,7 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     addButton: {
-        backgroundColor: '#52BCF6',
+        backgroundColor: '#F6931E',
         width: 50,
         height: 50,
         display: 'flex',
@@ -237,7 +292,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: 210,
         borderRadius: 25,
-        backgroundColor: '#F3F5F9',
+        backgroundColor: 'white',
     },
     profileImage: {
         height: 120,

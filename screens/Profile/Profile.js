@@ -6,9 +6,10 @@ import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
-
-
+import GlobalContext from '../../context/GlobalContext'
 const Profile = (props) => {
+
+    const context = React.useContext(GlobalContext)
     const [longitude, setLongitude] = React.useState(10.618040611648018)
     const [latitude, setLatitude] = React.useState(36.843400794030224)
     React.useEffect(() => {
@@ -40,14 +41,14 @@ const Profile = (props) => {
                 </View>
             </TouchableWithoutFeedback>
             <View style={styles.imageContainer}>
-                <Image source={profileImage} style={styles.profileImage}></Image>
+                <Image source={{ uri: context.user.profileImage }} style={styles.profileImage}></Image>
 
                 <View style={styles.editIcon}>
                     <AntDesign name="camera" size={14} color="white" />
                 </View>
             </View>
             <View style={styles.title}>
-                <Text style={styles.fullName}>Azer Khamassi</Text>
+                <Text style={styles.fullName}>{context.user.name}</Text>
                 <Text style={styles.role}>Full Stack Developer</Text>
             </View>
             <View style={styles.section}>
@@ -57,7 +58,7 @@ const Profile = (props) => {
             </View>
             <View style={styles.description}>
                 <Text style={{ color: '#909090' }}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    {context.user.description}
                 </Text>
             </View>
             <View style={styles.navigationHeader}>
