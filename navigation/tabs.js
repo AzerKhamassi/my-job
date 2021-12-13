@@ -16,7 +16,8 @@ import SettingsScreen from '../screens/Settings/Settings';
 import GlobalContext from '../context/GlobalContext';
 import Company from '../screens/Company/CompanyProfile';
 import Business from '../screens/Business/Business';
-import Messenger from '../screens/Messenger/Messenger';
+import SecurityScreen from '../screens/Security/Security'
+
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -75,6 +76,9 @@ const ProfileStackScreen = () => {
 
             }} />
             <ProfileStack.Screen name="Settings" component={SettingsScreen} options={{
+                animation: 'slide_from_right'
+            }} />
+            <ProfileStack.Screen name="Security" component={SecurityScreen} options={{
                 animation: 'slide_from_right'
             }} />
         </ProfileStack.Navigator>

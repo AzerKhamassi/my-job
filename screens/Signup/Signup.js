@@ -11,7 +11,8 @@ import {
     Pressable,
     SafeAreaView,
     Platform,
-    StatusBar
+    StatusBar,
+    KeyboardAvoidingView,
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 const logo = require("../../assets/my-job.png");
@@ -38,21 +39,29 @@ const Signup = () => {
     const [responseCamera, setResponseCamera] = React.useState(null)
     const [responseGallery, setResponseGallery] = React.useState(null)
     const [image, setImage] = React.useState(null);
-    const pickImageHandler = async () => {
-        const result = await launchCamera({ mediaType: 'photo' })
-        console.log(result)
-    }
+    const [countries, setCountries] = React.useState([])
+    const [selectedCountry, setSelectedCountry] = React.useState(null)
+
 
     React.useEffect(() => {
         axios
             .get('/location/country')
             .then((res) => {
                 // console.log(res.data.countries)
-                // setCountries(res.data.countries);
+                setCountries(res.data.countries);
             })
             .catch((err) => {
-                console.log({ err });
+                console.log(err);
             });
+        // axios
+        //     .get('/domain')
+        //     .then((res) => {
+        //         console.log(res)
+        //         // setDomainsData(res.data.domains);
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
     }, []);
     React.useEffect(() => {
         (async () => {
@@ -78,121 +87,141 @@ const Signup = () => {
     };
 
     const registerHandler = () => {
-        if (password.trim() === repassword.trim()) {
-            axios.post('/user', {
-                name: fullName,
-                description,
-                role: toggle ? 'consultant' : 'client',
-                password,
-                phone,
-                email,
-                address,
-                city: '60fb58640065601907b5110c',
-                domain: '60ff4e88c295452d940be7cd',
-                profileImage: 'https://smart-interact-bucket.s3.ca-central-1.amazonaws.com/1627165861830'
-            }).then(res => {
-                setAddress('')
-                setDescription('')
-                setEmail('')
-                setFullName('')
-                setPassword('')
-                setRepassword('')
-                setPhone('')
-                setTags([])
-            }).catch(err => console.log(err))
-        }
-        else
-            setErrMessage(true)
+        console.log(image)
+        const _image = {
+            uri: image,
+            type: 'image/jpeg',
+            name: 'photo.jpg',
+        };
+        const formData = new FormData();
+        formData.append('files', _image);
+        // console.log(formData)
+        axios.post('/upload', formData).then(res => {
+            console.log(res.data)
+        }).catch(err => console.log(err))
+        // if (password.trim() === repassword.trim()) {
+        //     axios.post('/user', {
+        //         name: fullName,
+        //         description,
+        //         role: toggle ? 'consultant' : 'client',
+        //         password,
+        //         phone,
+        //         email,
+        //         address,
+        //         city: '60fb58640065601907b5110c',
+        //         domain: '60ff4e88c295452d940be7cd',
+        //         profileImage: res.data[0]
+        //     }).then(res => {
+        //         setAddress('')
+        //         setDescription('')
+        //         setEmail('')
+        //         setFullName('')
+        //         setPassword('')
+        //         setRepassword('')
+        //         setPhone('')
+        //         setTags([])
+        //     }).catch(err => console.log(err))
+        // }
+        // else
+        //     setErrMessage(true)
     }
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
-            <SafeAreaView style={styles.container} >
-                <ScrollView
-                    contentInsetAdjustmentBehavior="never"
-                    showsVerticalScrollIndicator={false}
-                >
-                    <Pressable>
-                        <View style={styles.logoContainer}>
-                            <Image source={logo} style={styles.imageBackground}></Image>
-                        </View>
-                        <View>
-                            <View style={styles.imageContainer}>
-                                <Image source={image ? { uri: image } : profileImage} style={styles.profileImage}></Image>
-
-                                <View style={{ ...styles.editIcon, backgroundColor: toggle ? '#F6931E' : '#52BCF6' }}>
-                                    <TouchableWithoutFeedback onPress={pickImage}>
-                                        <AntDesign name="camera" size={14} color="white" />
-                                    </TouchableWithoutFeedback>
-                                </View>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'position' : ''}>
+                <SafeAreaView  >
+                    <ScrollView
+                        contentInsetAdjustmentBehavior="never"
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <Pressable>
+                            <View style={styles.logoContainer}>
+                                <Image source={logo} style={styles.imageBackground}></Image>
                             </View>
-                            <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-                                <Text>Company</Text>
-                                <ToggleSwitch
-                                    isOn={toggle}
-                                    offColor="#52BCF6"
-                                    onColor="#F6931E"
-                                    labelStyle={{ color: "black", fontWeight: "900" }}
-                                    size="large"
-                                    onToggle={isOn => setToggle(isOn)}
-                                />
-                                <Text>Consultant</Text>
-                            </View>
-                            <TextInput
-                                placeholder='Full Name' value={fullName}
-                                onChangeText={(text) => setFullName(text)} style={styles.input} />
-                            <TextInput placeholder='Email' value={email}
-                                onChangeText={(text) => setEmail(text)} style={styles.input} />
-                            <TextInput placeholder='Phone' value={phone}
-                                keyboardType='numeric' onChangeText={(text) => setPhone(text)}
-                                style={styles.input} />
-                            <TextInput placeholder='Password' value={password}
-                                onChangeText={(text) => setPassword(text)}
-                                secureTextEntry={true} style={styles.input} />
-                            <TextInput placeholder='Retype password' value={repassword}
-                                onChangeText={(text) => setRepassword(text)} secureTextEntry={true} style={styles.input} />
-                            <TextInput placeholder='Address' value={address}
-                                onChangeText={(text) => setAddress(text)} style={styles.input} />
-                            <TextInput placeholder='Description' value={description}
-                                multiline={true} onChangeText={(text) => setDescription(text)}
-                                numberOfLines={5} style={styles.inputDescription} />
-                        </View>
-                        {
-                            toggle &&
                             <View>
-                                <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                    <TextInput style={styles.inputTag} placeholder='Skill' value={tag} onChangeText={(text) => setTag(text)} />
-                                    <TouchableHighlight
-                                        onPress={() => {
-                                            setTags([...tags, { name: tag }])
-                                            setTag('')
-                                        }}
-                                        underlayColor='#52BCF6'
-                                        style={styles.addButton}>
-                                        <Ionicons name="add-circle-outline" size={24} color="white" />
-                                    </TouchableHighlight>
-                                </View>
-                                <View style={styles.tagsContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image source={image ? { uri: image } : profileImage} style={styles.profileImage}></Image>
 
-                                    {
-                                        tags.map((tag, i) => (
-                                            <Text style={styles.tag} key={i}>{tag.name}</Text>
-                                        ))
-                                    }
+                                    <View style={{ ...styles.editIcon, backgroundColor: toggle ? '#F6931E' : '#52BCF6' }}>
+                                        <TouchableWithoutFeedback onPress={pickImage}>
+                                            <AntDesign name="camera" size={14} color="white" />
+                                        </TouchableWithoutFeedback>
+                                    </View>
                                 </View>
+                                <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text>Company</Text>
+                                    <ToggleSwitch
+                                        isOn={toggle}
+                                        offColor="#52BCF6"
+                                        onColor="#F6931E"
+                                        labelStyle={{ color: "black", fontWeight: "900" }}
+                                        size="large"
+                                        onToggle={isOn => setToggle(isOn)}
+                                    />
+                                    <Text>Consultant</Text>
+                                </View>
+                                <TextInput
+                                    placeholder='Full Name' value={fullName}
+                                    onChangeText={(text) => setFullName(text)} style={styles.input} />
+                                <TextInput placeholder='Email' value={email}
+                                    onChangeText={(text) => setEmail(text)} style={styles.input} />
+                                <TextInput placeholder='Phone' value={phone}
+                                    keyboardType='numeric' onChangeText={(text) => setPhone(text)}
+                                    style={styles.input} />
+                                <TextInput placeholder='Password' value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                                    secureTextEntry={true} style={styles.input} />
+                                <TextInput placeholder='Retype password' value={repassword}
+                                    onChangeText={(text) => setRepassword(text)} secureTextEntry={true} style={styles.input} />
+                                <View >
+                                    <Text style={{ marginVertical: 10 }}>Country</Text>
+
+                                    <Text style={{ marginVertical: 10 }}>City</Text>
+
+                                </View>
+                                <TextInput placeholder='Address' value={address}
+                                    onChangeText={(text) => setAddress(text)} style={styles.input} />
+                                <TextInput placeholder='Description' value={description}
+                                    multiline={true} onChangeText={(text) => setDescription(text)}
+                                    numberOfLines={5} style={styles.inputDescription} />
                             </View>
-                        }
-                        <View>
-                            <TouchableHighlight
-                                underlayColor='#52BCF6'
-                                style={{ ...styles.signupButton, backgroundColor: toggle ? '#F6931E' : '#52BCF6', }}
-                                onPress={() => registerHandler()}>
-                                <Text style={styles.buttonText}>Sign up</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </Pressable>
-                </ScrollView>
-            </SafeAreaView>
+                            {
+                                toggle &&
+                                <View>
+                                    <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <TextInput style={styles.inputTag} placeholder='Skill' value={tag} onChangeText={(text) => setTag(text)} />
+                                        <TouchableHighlight
+                                            onPress={() => {
+                                                setTags([...tags, { name: tag }])
+                                                setTag('')
+                                            }}
+                                            underlayColor='#52BCF6'
+                                            style={styles.addButton}>
+                                            <Ionicons name="add-circle-outline" size={24} color="white" />
+                                        </TouchableHighlight>
+                                    </View>
+                                    <View style={styles.tagsContainer}>
+
+                                        {
+                                            tags.map((tag, i) => (
+                                                <Text style={styles.tag} key={i}>{tag.name}</Text>
+                                            ))
+                                        }
+                                    </View>
+                                </View>
+                            }
+                            <View>
+                                <TouchableHighlight
+                                    underlayColor='#52BCF6'
+                                    style={{ ...styles.signupButton, backgroundColor: toggle ? '#F6931E' : '#52BCF6', }}
+                                    onPress={() => registerHandler()}>
+                                    <Text style={styles.buttonText}>Sign up</Text>
+                                </TouchableHighlight>
+                            </View>
+                        </Pressable>
+                    </ScrollView>
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     )
 }

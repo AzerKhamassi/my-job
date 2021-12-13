@@ -10,7 +10,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-picker/picker": "2.1.0",
+    "@react-native-picker/picker": "^2.1.0",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
@@ -19,6 +19,7 @@
     "axios": "^0.24.0",
     "env-cmd": "^10.1.0",
     "expo": "~43.0.2",
+    "expo-image-picker": "~11.0.3",
     "expo-location": "~13.0.4",
     "expo-notifications": "~0.13.3",
     "expo-status-bar": "~1.1.0",
@@ -32,9 +33,9 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-head-tab-view": "^4.0.0-rc.13",
     "react-native-maps": "0.29.4",
+    "react-native-material-dropdown": "^0.11.1",
     "react-native-pager-view": "5.4.6",
     "react-native-paper": "^4.10.1",
-    "react-native-picker-select": "^8.0.4",
     "react-native-raw-bottom-sheet": "^2.2.0",
     "react-native-reanimated": "^2.2.4",
     "react-native-safe-area-context": "3.3.2",
@@ -45,8 +46,7 @@
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
-    "toggle-switch-react-native": "^3.3.0",
-    "expo-image-picker": "~11.0.3"
+    "toggle-switch-react-native": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

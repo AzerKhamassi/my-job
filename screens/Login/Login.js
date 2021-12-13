@@ -7,13 +7,17 @@ import {
     Text,
     TouchableHighlight,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    SafeAreaView,
+    StatusBar,
+    KeyboardAvoidingView
 } from 'react-native'
 import logo from '../../assets/my-job.png'
 import Constants from 'expo-constants'
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext'
 import asyncStorageService from '../../utlis/asyncStorageService'
+import { color } from 'react-native-reanimated'
 
 
 const Login = (props) => {
@@ -50,9 +54,12 @@ const Login = (props) => {
     if (!loading)
         return (
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
-                <View style={styles.container}>
+                <SafeAreaView style={styles.container}  >
                     <View style={styles.logoContainer}>
                         <Image source={logo} style={styles.logo}></Image>
+                    </View>
+                    <View style={{ marginBottom: 10 }}>
+                        <Text >Your guide to find your next career opportunity</Text>
                     </View>
                     <View>
                         <TextInput placeholder='Email'
@@ -70,7 +77,7 @@ const Login = (props) => {
                         />
                     </View>
                     <View style={styles.forgotPaswword}>
-                        <Text>Forgot password?</Text>
+                        <Text style={{ color: '#52BCF6' }}>Forgot password?</Text>
                     </View>
                     {
                         errMessage &&
@@ -96,7 +103,7 @@ const Login = (props) => {
                                 style={styles.signupLink}> Sign up</Text>
                         </Text>
                     </View>
-                </View>
+                </SafeAreaView>
             </TouchableWithoutFeedback>
         )
     return null
@@ -108,7 +115,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#F8F8FA',
         alignItems: 'center',
         justifyContent: 'center',
-        // paddingTop: Constants.statusBarHeight + 20
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+
     },
     logoContainer: {
         height: 150,
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
     forgotPaswword: {
         width: 280,
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     loginButton: {
         backgroundColor: '#52BCF6',

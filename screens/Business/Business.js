@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Text, useWindowDimensions } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import Applications from '../Applications/Applications';
 import AddOffer from './AddOffer/AddOffer';
 import Offers from './Offers/Offers';
 
@@ -21,7 +22,6 @@ const renderScene = SceneMap({
 
 const Business = (props) => {
     const layout = useWindowDimensions();
-
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'first', title: 'Add Offer' },
@@ -30,7 +30,8 @@ const Business = (props) => {
 
     return (
         <View style={styles.container}>
-            <Offers />
+            {/* <Offers /> */}
+            <Applications />
             {/* <AddOffer /> */}
         </View>
     )

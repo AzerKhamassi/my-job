@@ -12,7 +12,6 @@ import {
     KeyboardAvoidingView
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
-import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
 import axios from '../../../utlis/axios';
 import GlobalContext from '../../../context/GlobalContext';
@@ -98,37 +97,11 @@ const AddOffer = (props) => {
                                 </View>
                                 <View >
                                     <Text style={{ marginVertical: 10 }}>City</Text>
-                                    <RNPickerSelect
-                                        style={{
-                                            viewContainer: {
-                                                backgroundColor: '#F3F5F9', borderRadius: 20,
-                                                padding: Platform.OS === 'ios' ? 15 : 0
-                                            }
-                                        }}
-                                        onValueChange={(value) => console.log(value)}
-                                        items={[
-                                            { label: 'Football', value: 'football' },
-                                            { label: 'Baseball', value: 'baseball' },
-                                            { label: 'Hockey', value: 'hockey' },
-                                        ]}
-                                    />
+
                                 </View>
                                 <View>
                                     <Text style={{ marginVertical: 10 }}>Category</Text>
-                                    <RNPickerSelect
-                                        style={{
-                                            viewContainer: {
-                                                backgroundColor: '#F3F5F9', borderRadius: 20,
-                                                padding: Platform.OS === 'ios' ? 15 : 0
-                                            }
-                                        }}
-                                        onValueChange={(value) => console.log(value)}
-                                        items={[
-                                            { label: 'Football', value: 'football' },
-                                            { label: 'Baseball', value: 'baseball' },
-                                            { label: 'Hockey', value: 'hockey' },
-                                        ]}
-                                    />
+
                                 </View>
                                 <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <TextInput style={styles.inputTag} placeholder='Tag' value={tag} onChangeText={(text) => setTag(text)} />
