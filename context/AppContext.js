@@ -41,6 +41,7 @@ const AppContext = (props) => {
             notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
                 const newNotification = notification.request.content.data
                 setNotifications((_notifications) => {
+
                     return [..._notifications, newNotification]
                 });
             });
@@ -90,6 +91,15 @@ const AppContext = (props) => {
             savedOffers: [...user.savedOffers, offer]
         })
     }
+
+    const addUserAppliedOffer = (offer) => {
+        console.log(user.appliedOffers.map(o => o._id))
+        setUser({
+            ...user,
+            appliedOffers: [...user.savedOffers, offer]
+        })
+    }
+
     const removeUserSavedOffer = (offerId) => {
         console.log(offerId)
         console.log(user.savedOffers.map(o => o._id))
@@ -158,7 +168,8 @@ const AppContext = (props) => {
                 setTabBarVisibility,
                 refreshUser,
                 logoutUser,
-                errorOccured
+                errorOccured,
+                addUserAppliedOffer
             }}
         >
             {!loadingUser ? props.children

@@ -7,13 +7,53 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
 import GlobalContext from '../../context/GlobalContext'
+import axios from 'axios';
 const Profile = (props) => {
 
     const context = React.useContext(GlobalContext)
     const [longitude, setLongitude] = React.useState(10.618040611648018)
     const [latitude, setLatitude] = React.useState(36.843400794030224)
+    const [image, setImage] = React.useState(null);
+
     React.useEffect(() => {
+        console.log(context.user)
     }, [])
+
+
+    const updateProfileImageHandler = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.cancelled) {
+            setImage(result.uri)
+            const _image = {
+                uri: image,
+                type: 'image/jpeg',
+                name: 'photo.jpg',
+            };
+            const formData = new FormData();
+            formData.append('files', _image);
+            axios.post('/upload', formData).then(res => {
+                console.log(res.data)
+                axios.patch('/user', [{ propName: 'profileImage', value: res.data[0] }]).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }).catch(err => console.log(err))
+        }
+    }
 
     const getCurrentPositionHandler = () => {
         try {
@@ -48,7 +88,7 @@ const Profile = (props) => {
                 </View>
             </View>
             <View style={styles.title}>
-                <Text style={styles.fullName}>{context.user.name}</Text>
+                <Text style={styles.fullName}>{`${context.user.firstName} ${context.user.lastName}`}</Text>
                 <Text style={styles.role}>Full Stack Developer</Text>
             </View>
             <View style={styles.section}>

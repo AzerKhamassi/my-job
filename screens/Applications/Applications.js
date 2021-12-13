@@ -1,18 +1,41 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Pressable } from 'react-native'
 import Card from './Card/Card'
-
+import axios from '../../utlis/axios'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Applications = (props) => {
+
+    const [offers, setOffers] = React.useState([])
+
+
+    React.useState(() => {
+        axios.get('/offer/client').then(res => {
+            setOffers(res.data.offers)
+            console.log(res.data.offers.length)
+        }).catch(err => {
+            console.log(err)
+        })
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Text>HEYYYY</Text>
-            {
-                [1, 2, 3, 4, 5, 6].map(i => (
-                    <Card key={i} />
+            <ScrollView
+                contentInsetAdjustmentBehavior="never"
+            // showsVerticalScrollIndicator={false}
+            >
+                <Pressable>
+                    <View>
 
-                ))
-            }
+                        {
+                            offers.map(offer => (
+                                <Card name={offer.name} key={offer._id} />
+
+                            ))
+                        }
+                    </View>
+                </Pressable>
+            </ScrollView>
         </View>
     )
 }

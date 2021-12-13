@@ -17,6 +17,7 @@ import GlobalContext from '../context/GlobalContext';
 import Company from '../screens/Company/CompanyProfile';
 import Business from '../screens/Business/Business';
 import SecurityScreen from '../screens/Security/Security'
+import SearchedOffers from '../screens/SearchedOffers/SearchedOffers';
 
 
 const Tab = createBottomTabNavigator()
@@ -47,6 +48,9 @@ const HomeStackScreen = () => {
 
             }} />
             <HomeStack.Screen name="Business" component={Business} options={{
+
+            }} />
+            <HomeStack.Screen name="Search" component={SearchedOffers} options={{
 
             }} />
 
