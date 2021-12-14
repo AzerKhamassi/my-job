@@ -10,6 +10,7 @@ import GlobalContext from '../../context/GlobalContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 const Company = (props) => {
@@ -46,28 +47,47 @@ const Company = (props) => {
                     showsVerticalScrollIndicator={false}
                 >
                     <Pressable>
-                        <View style={styles.settings}>
-                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Business')}>
-                                <FontAwesome name="building-o" size={24} color="black" />
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
-                                <Feather name="settings" size={24} color="black" />
-                            </TouchableWithoutFeedback>
-                        </View>
+
                         <View style={styles.imageContainer}>
                             <Image source={{ uri: company?.profileImage }} style={styles.profileImage}></Image>
 
-                            <View style={styles.editIcon}>
-                                <AntDesign name="camera" size={14} color="white" />
-                            </View>
                         </View>
                         <View style={styles.title}>
                             <Text style={styles.fullName}>{company?.name}</Text>
-                            <TouchableOpacity>
-                                <Text>
-                                    Subscribe
-                                </Text>
-                            </TouchableOpacity>
+                            {
+                                context.user._id !== company._id &&
+                                <TouchableOpacity
+                                    underlayColor='#52BCF6'
+                                    style={styles.subscribeButton}
+
+                                >
+                                    {
+                                        console.log(company.followers.map(follower => follower._id).includes(context.user._id))
+
+                                    }
+                                    {
+                                        company.followers.map(follower => follower._id).includes(context.user._id)
+                                            ?
+                                            <TouchableWithoutFeedback onPress={() => context.followClientHandler(company._id)}>
+                                                <React.Fragment>
+                                                    <SimpleLineIcons name="user-following" size={22} color="white" />
+                                                    <Text style={styles.subscribeText}>
+                                                        Unsubscribe
+                                                    </Text>
+                                                </React.Fragment>
+                                            </TouchableWithoutFeedback>
+                                            :
+                                            <TouchableWithoutFeedback onPress={() => context.unfollowClientHandler(company._id)}>
+                                                <React.Fragment>
+                                                    <SimpleLineIcons name="user-follow" size={22} color="white" />
+                                                    <Text style={styles.subscribeText}>
+                                                        Subscribe
+                                                    </Text>
+                                                </React.Fragment>
+                                            </TouchableWithoutFeedback>
+                                    }
+                                </TouchableOpacity>
+                            }
                         </View>
                         <View style={styles.section}>
                             <Text style={{ fontWeight: 'bold' }}>
@@ -88,7 +108,6 @@ const Company = (props) => {
                         <View style={styles.categoriesSection}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                                 <Pressable style={{ display: 'flex', flexDirection: 'row' }}>
-                                    {console.log(company.domain.categories)}
                                     {
                                         categories.map((category, i) => (
                                             <CategoryCard key={i} category={category} />
@@ -203,7 +222,8 @@ const styles = StyleSheet.create({
     },
     fullName: {
         fontSize: 18,
-        fontWeight: '700'
+        fontWeight: '700',
+        marginVertical: 5
     },
     role: {
         fontSize: 20,
@@ -213,18 +233,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center'
     },
-    editIcon: {
-        backgroundColor: '#7CCCF8',
-        height: 30,
-        width: 30,
-        borderRadius: 20,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        right: 125,
-        bottom: 5,
-    },
+
     mapContainer: {
         // ...StyleSheet.absoluteFillObject,
         height: 400,
@@ -253,6 +262,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         justifyContent: 'space-between'
     },
+    subscribeButton: {
+        backgroundColor: '#52BCF6',
+        width: 150,
+        display: 'flex',
+        alignItems: 'center',
+        paddingVertical: 10,
+        borderRadius: 30,
+        color: 'white',
+        marginVertical: 10,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    subscribeText: {
+        color: 'white',
+        marginHorizontal: 5
+    }
 })
 
 

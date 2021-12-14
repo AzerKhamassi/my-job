@@ -24,7 +24,7 @@ import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
 
 
-const Signup = () => {
+const Signup = (props) => {
     const [toggle, setToggle] = React.useState(false)
     const [tags, setTags] = React.useState([])
     const [tag, setTag] = React.useState('')
@@ -39,7 +39,8 @@ const Signup = () => {
     const [image, setImage] = React.useState(null);
     const [countries, setCountries] = React.useState([])
     const [selectedCountry, setSelectedCountry] = React.useState(null)
-
+    const [firstName, setFirstName] = React.useState('')
+    const [lastName, setLastName] = React.useState('')
 
     React.useEffect(() => {
         axios
@@ -159,10 +160,26 @@ const Signup = () => {
                                     />
                                     <Text>Consultant</Text>
                                 </View>
-                                <TextInput
-                                    placeholder='Full Name' value={fullName}
-                                    onChangeText={(text) => setFullName(text)} style={styles.input} />
+                                {
+                                    !toggle ?
+                                        <React.Fragment>
+                                            <TextInput
+                                                placeholder='Full Name' value={fullName}
+                                                onChangeText={(text) => setFullName(text)} style={styles.input} />
+                                        </React.Fragment>
+                                        :
+                                        <React.Fragment>
+                                            <TextInput
+                                                placeholder='First Name' value={firstName}
+                                                onChangeText={(text) => setFirstName(text)} style={styles.input} />
+                                            <TextInput
+                                                placeholder='Last Name' value={lastName}
+                                                onChangeText={(text) => setLastName(text)} style={styles.input} />
+                                        </React.Fragment>
+                                }
+
                                 <TextInput placeholder='Email' value={email}
+                                    keyboardType='email-address'
                                     onChangeText={(text) => setEmail(text)} style={styles.input} />
                                 <TextInput placeholder='Phone' value={phone}
                                     keyboardType='numeric' onChangeText={(text) => setPhone(text)}
@@ -190,11 +207,12 @@ const Signup = () => {
                                     <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                         <TextInput style={styles.inputTag} placeholder='Skill' value={tag} onChangeText={(text) => setTag(text)} />
                                         <TouchableHighlight
+                                            disabled={tag === ''}
                                             onPress={() => {
                                                 setTags([...tags, { name: tag }])
                                                 setTag('')
                                             }}
-                                            underlayColor='#52BCF6'
+                                            underlayColor='#F6931E'
                                             style={styles.addButton}>
                                             <Ionicons name="add-circle-outline" size={24} color="white" />
                                         </TouchableHighlight>
@@ -217,6 +235,14 @@ const Signup = () => {
                                     <Text style={styles.buttonText}>Sign up</Text>
                                 </TouchableHighlight>
                             </View>
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text
+                                    style={{
+                                        color: toggle ? '#F6931E' : '#52BCF6'
+                                    }}
+                                    onPress={() => props.navigation.navigate('Login')}
+                                >Already have an account?</Text>
+                            </View>
                         </Pressable>
                     </ScrollView>
                 </SafeAreaView>
@@ -231,7 +257,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#F8F8FA',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingBottom: 10
 
     },
     logoContainer: {

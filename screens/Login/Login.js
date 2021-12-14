@@ -19,7 +19,6 @@ import Constants from 'expo-constants'
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext'
 import asyncStorageService from '../../utlis/asyncStorageService'
-import { color } from 'react-native-reanimated'
 
 
 const Login = (props) => {
@@ -62,9 +61,6 @@ const Login = (props) => {
                         contentInsetAdjustmentBehavior="never"
                         showsVerticalScrollIndicator={false}>
                         <Pressable>
-
-
-
                             <View style={styles.logoContainer}>
                                 <Image source={logo} style={styles.logo}></Image>
                             </View>
@@ -97,6 +93,13 @@ const Login = (props) => {
                                     </Text>
                                 </View>
                             }
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
+                                <View style={{ flex: 1, height: 1, backgroundColor: '#ddd' }} />
+                                <View>
+                                    <Text style={{ width: 50, textAlign: 'center', color: '#a7a7a7' }}>OR</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: '#ddd' }} />
+                            </View>
                             <View >
                                 <TouchableHighlight
                                     underlayColor='#52BCF6'
@@ -106,12 +109,9 @@ const Login = (props) => {
                                 </TouchableHighlight>
                             </View>
                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                                <Text>
-                                    Don't have an account?
-                                    <Text
-                                        onPress={() => props.navigation.navigate('Signup')}
-                                        style={styles.signupLink}> Sign up</Text>
-                                </Text>
+                                <Text
+                                    onPress={() => props.navigation.navigate('Signup')}
+                                    style={styles.signupLink}> Create an account</Text>
                             </View>
                         </Pressable>
                     </ScrollView>
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     },
     signupLink: {
         color: '#52BCF6',
+        fontSize: 16
     },
     errorContainer: {
         display: 'flex',
