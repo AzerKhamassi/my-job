@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     input: {
-        paddingHorizontal: 40,
+        paddingHorizontal: 50,
         paddingVertical: 15,
         marginVertical: 10,
         width: 300,

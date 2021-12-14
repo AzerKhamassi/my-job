@@ -21,7 +21,7 @@ const CompanyProfile = (props) => {
     const context = React.useContext(GlobalContext)
 
     React.useEffect(() => {
-
+        console.log(context.user)
     }, [])
     return (
         <View style={styles.container}>
@@ -33,7 +33,7 @@ const CompanyProfile = (props) => {
                         <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Business')}>
                             <FontAwesome name="building-o" size={24} color="black" />
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
+                        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('SettingsCompany')}>
                             <Feather name="settings" size={24} color="black" />
                         </TouchableWithoutFeedback>
                     </View>
@@ -47,9 +47,7 @@ const CompanyProfile = (props) => {
                     <View style={styles.title}>
                         <Text style={styles.fullName}>{context.user.name}</Text>
                         <TouchableOpacity>
-                            <Text>
-                                Subscribe
-                            </Text>
+
                         </TouchableOpacity>
                     </View>
                     <View style={styles.section}>

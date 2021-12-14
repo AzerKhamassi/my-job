@@ -100,6 +100,31 @@ const AppContext = (props) => {
         })
     }
 
+    const followClientHandler = (userId) => {
+        axios.post('/user/follow', { clientId: userId }).then(res => {
+            setUser({ ...user, followers: [...user.followers, userId] })
+            console.log(res.data)
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+
+    const unfollowClientHandler = (userId) => {
+        axios.delete(`/user/follow/${userId}`).then(res => {
+            console.log(res)
+            const _user = { ...user }
+            const followerIndex = user.followers.findIndex(follower => follower === userId)
+            if (followerIndex > -1) {
+                _user.followers.splice(followerIndex, 1)
+                setUser({ ..._user })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+
     const removeUserSavedOffer = (offerId) => {
         console.log(offerId)
         console.log(user.savedOffers.map(o => o._id))
@@ -169,7 +194,9 @@ const AppContext = (props) => {
                 refreshUser,
                 logoutUser,
                 errorOccured,
-                addUserAppliedOffer
+                addUserAppliedOffer,
+                followClientHandler,
+                unfollowClientHandler
             }}
         >
             {!loadingUser ? props.children
