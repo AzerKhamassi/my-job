@@ -151,9 +151,7 @@ const Company = (props) => {
                             <Text style={{ fontWeight: 'bold' }}>
                                 Current Location
                             </Text>
-                            <TouchableWithoutFeedback onPress={() => getCurrentPositionHandler()}>
-                                <MaterialIcons style={styles.myLocation} name="my-location" size={24} color="black" />
-                            </TouchableWithoutFeedback>
+
                         </View>
                         <View >
                             <View style={styles.mapContainer}>

@@ -102,8 +102,8 @@ const Home = (props) => {
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',
-                                            paddingBottom: 8,
-                                            paddingTop: 5
+                                            paddingBottom: 12,
+                                            paddingTop: 5,
                                         }
                                     }}
                                 >

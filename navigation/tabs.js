@@ -95,10 +95,14 @@ const CompanyProfileStackScreen = () => {
 
             }} />
             <CompanyProfileStack.Screen name="SettingsCompany" component={SettingsScreen} options={{
-                animation: 'slide_from_right'
+                animation: 'slide_from_right',
+                title: 'Settings'
             }} />
             <HomeStack.Screen name="Business" component={Business} options={{
                 animation: 'slide_from_left'
+            }} />
+            <ProfileStack.Screen name="Security" component={SecurityScreen} options={{
+                animation: 'slide_from_right'
             }} />
         </CompanyProfileStack.Navigator>
     );

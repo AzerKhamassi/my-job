@@ -67,7 +67,7 @@ const Login = (props) => {
                             <View style={{ marginBottom: 10 }}>
                                 <Text >Your guide to find your next career opportunity</Text>
                             </View>
-                            <View>
+                            <View style={{ display: 'flex', alignItems: 'center' }}>
                                 <TextInput placeholder='Email'
                                     style={styles.input}
                                     value={email}
@@ -94,8 +94,9 @@ const Login = (props) => {
                                 </View>
                             }
 
-                            <View >
+                            <View style={{ display: 'flex', alignItems: 'center' }} >
                                 <TouchableHighlight
+                                    disabled={email === '' || password === ''}
                                     underlayColor='#52BCF6'
                                     style={styles.loginButton}
                                     onPress={() => { loginHandler() }}>
