@@ -56,7 +56,7 @@ const OfferDetails = (props) => {
         }).then(res => {
             console.log(res.data)
             setModalVisible(false)
-            context.addUserAppliedOffer(offer)
+            // context.addUserAppliedOffer(offer)
         }).catch(err => {
             console.log(err)
         })
@@ -117,7 +117,7 @@ const OfferDetails = (props) => {
                         <TouchableHighlight
                             underlayColor='#52BCF6'
                             style={styles.applyButton}
-                            onPress={() => { toggleModal() }}>
+                            onPress={() => { setModalVisible(true) }}>
                             <Text style={styles.buttonText}>Apply now</Text>
                         </TouchableHighlight>
                         <AwesomeAlert
@@ -133,6 +133,7 @@ const OfferDetails = (props) => {
                             confirmText="Yes, Apply"
                             confirmButtonColor="green"
                             onCancelPressed={() => {
+                                setModalVisible(false)
                             }}
                             onConfirmPressed={() => {
                                 applyHandler()

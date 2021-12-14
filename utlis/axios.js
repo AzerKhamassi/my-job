@@ -1,6 +1,7 @@
 import axios from 'axios';
 import asyncStorageService from './asyncStorageService';
 const apiHost = process.env.API_URL;
+// const apiHost = '192.168.0.5:5000';
 console.log(apiHost)
 const axiosInstance = axios.create({ baseURL: apiHost });
 axiosInstance.interceptors.request.use(

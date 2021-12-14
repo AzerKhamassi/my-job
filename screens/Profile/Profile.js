@@ -1,13 +1,15 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { Feather } from '@expo/vector-icons';
-import profileImage from '../../assets/azer.jpg'
 import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
 import GlobalContext from '../../context/GlobalContext'
 import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker'
+
+
 const Profile = (props) => {
 
     const context = React.useContext(GlobalContext)
@@ -75,16 +77,18 @@ const Profile = (props) => {
     }
     return (
         <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
-                <View style={styles.settings}>
+            <View style={styles.settings}>
+                <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
                     <Feather name="settings" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+            </View>
             <View style={styles.imageContainer}>
                 <Image source={{ uri: context.user.profileImage }} style={styles.profileImage}></Image>
 
                 <View style={styles.editIcon}>
-                    <AntDesign name="camera" size={14} color="white" />
+                    <TouchableWithoutFeedback onPress={() => updateProfileImageHandler()}>
+                        <AntDesign name="camera" size={14} color="white" />
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
             <View style={styles.title}>

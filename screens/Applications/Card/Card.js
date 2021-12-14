@@ -1,23 +1,34 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons';
+import FormateDate from '../../../utlis/FormatDate';
 
 const Card = (props) => {
     return (
         <View style={styles.card}>
             <View style={styles.cardTitle}>
-                <Text>Someone has applied in your offer {props.name}</Text>
-                <Text>2hs</Text>
+                <Text>{props.applicant} has applied in your offer {props.offerName}</Text>
+                <Text>
+                    <FormateDate>
+                        {props.date}
+                    </FormateDate>
+                </Text>
             </View>
-
-            <View style={styles.cardFooter}>
-                <View style={{ marginHorizontal: 5 }}>
-                    <FontAwesome5 name="check-circle" size={24} color="green" />
+            {
+                props.showControls &&
+                <View style={styles.cardFooter}>
+                    <View style={{ marginHorizontal: 5 }}>
+                        <TouchableWithoutFeedback onPress={() => props.acceptApplicationFunction()}>
+                            <FontAwesome5 name="check-circle" size={24} color="green" />
+                        </TouchableWithoutFeedback>
+                    </View>
+                    <View>
+                        <TouchableWithoutFeedback onPress={() => console.log('decline')}>
+                            <FontAwesome5 name="times-circle" size={24} color="red" />
+                        </TouchableWithoutFeedback>
+                    </View>
                 </View>
-                <View>
-                    <FontAwesome5 name="times-circle" size={24} color="red" />
-                </View>
-            </View>
+            }
         </View>
     )
 }

@@ -42,7 +42,7 @@ const AppContext = (props) => {
                 const newNotification = notification.request.content.data
                 setNotifications((_notifications) => {
 
-                    return [..._notifications, newNotification]
+                    return [newNotification, ..._notifications]
                 });
             });
 
@@ -63,7 +63,7 @@ const AppContext = (props) => {
             axios.get(`/user/connected-user`)
                 .then(response => {
                     setUser(response.data.connectedUser)
-                    setNotifications(response.data.notifications)
+                    setNotifications(response.data.notifications.slice(0).reverse())
                     setLoadingUser(false)
 
                 }).catch(err => {
