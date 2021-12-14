@@ -63,7 +63,6 @@ const Company = (props) => {
                                 >
                                     {
                                         console.log(company.followers.map(follower => follower._id).includes(context.user._id))
-
                                     }
                                     {
                                         company.followers.map(follower => follower._id).includes(context.user._id)

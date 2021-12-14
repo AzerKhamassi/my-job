@@ -101,6 +101,7 @@ const AppContext = (props) => {
     }
 
     const followClientHandler = (userId) => {
+        console.log(userId)
         axios.post('/user/follow', { clientId: userId }).then(res => {
             setUser({ ...user, followers: [...user.followers, userId] })
             console.log(res.data)
