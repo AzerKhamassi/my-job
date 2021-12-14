@@ -29,6 +29,7 @@ import { FontAwesome } from '@expo/vector-icons';
 const Home = (props) => {
     const refRBSheet = React.useRef();
     const [offers, setOffers] = React.useState(null)
+    const [recommandedOffers, setRecommandedOffers] = React.useState(null)
     const context = React.useContext(GlobalContext)
     const [keyword, setKeyword] = React.useState('')
     const [location, setLocation] = React.useState('')
@@ -36,6 +37,14 @@ const Home = (props) => {
         axios.get('/offer')
             .then(res => {
                 setOffers(res.data.offers)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+        axios.get('/offer/recommandation')
+            .then(res => {
+                setRecommandedOffers(res.data.offers)
             })
             .catch(err => {
                 console.log(err)
@@ -123,8 +132,23 @@ const Home = (props) => {
                         </View>
                         <View style={styles.offersSection}>
                             {
-                                [].map(i => (
-                                    <OfferCard key={i} navigation={props.navigation} />
+                                recommandedOffers?.map((offer, i) => (
+                                    <OfferCard
+                                        key={'rec' + offer._id}
+                                        offer={offer}
+                                        name={offer?.name}
+                                        city={offer?.city}
+                                        jobDescription={offer?.jobDescription}
+                                        date={offer?.date}
+                                        tags={offer?.tags}
+                                        offerId={offer?._id}
+                                        isSavedOfferFunction={() => context.isSavedOfferHandler(offer._id)}
+                                        deleteSavedOfferFunction={() => context.deleteSavedOfferHandler(offer._id)}
+                                        saveOfferFunction={() => context.saveOfferHandler(offer._id)}
+                                        type={offer.type}
+                                        connectedUserId={context.user?._id}
+                                        navigation={props.navigation}
+                                    />
                                 ))
                             }
                         </View>
