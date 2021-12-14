@@ -1,20 +1,15 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, TouchableWithoutFeedback, Pressable, TouchableHighlight } from 'react-native'
-import { AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, ScrollView, Pressable, TouchableHighlight } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import { MaterialIcons } from '@expo/vector-icons';
 import axios from '../../utlis/axios'
 import CategoryCard from '../../components/CategoryCard/CategoryCard';
 import OfferCard from '../../components/OfferCard/OfferCard';
 import GlobalContext from '../../context/GlobalContext';
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 const Company = (props) => {
-    const [longitude, setLongitude] = React.useState(10.618040611648018)
-    const [latitude, setLatitude] = React.useState(36.843400794030224)
+
     const [company, setCompany] = React.useState(null)
     const [categories, setCategories] = React.useState(null)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
@@ -45,7 +40,6 @@ const Company = (props) => {
         console.log(userId)
         axios.post('/user/follow', { clientId: userId }).then(res => {
             setCompany({ ...company, followers: [...company.followers, context.user._id] })
-            console.log(res.data)
         }).catch(err => {
             console.log(err)
         })
@@ -54,7 +48,6 @@ const Company = (props) => {
 
     const unfollowClientHandler = (userId) => {
         axios.delete(`/user/follow/${userId}`).then(res => {
-            console.log(res.data)
             const _company = { ...company }
             const followerIndex = company.followers.findIndex(follower => follower === context.user._id)
             if (followerIndex > -1) {
@@ -188,16 +181,14 @@ const Company = (props) => {
                                     provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                                     style={styles.map}
                                     region={{
-                                        latitude: 35.843400794030224,
-                                        longitude: 10.618040611648018,
-                                        latitudeDelta: 0.015,
-                                        longitudeDelta: 0.0121,
+                                        latitude: company.position?.latitude,
+                                        longitude: company.position?.longitude,
                                     }}
                                 >
                                     <Marker
-                                        coordinate={{ latitude, longitude }}
-                                        title={'Current Location'}
-                                        description={'Hey'}
+                                        coordinate={{ latitude: company.position?.latitude, longitude: company.position?.longitude }}
+                                        title={'My position'}
+                                        description={'The company location'}
                                     >
                                     </Marker>
                                 </MapView>

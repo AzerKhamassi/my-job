@@ -11,20 +11,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
-
-
+import * as Location from 'expo-location';
+import imgMarker from '../../assets/map-marker.png'
 const CompanyProfile = (props) => {
-    const [longitude, setLongitude] = React.useState(10.618040611648018)
-    const [latitude, setLatitude] = React.useState(36.843400794030224)
-    const [company, setCompany] = React.useState(null)
-    const [categories, setCategories] = React.useState(null)
-    const [selectedCategory, setSelectedCategory] = React.useState(null)
     const context = React.useContext(GlobalContext)
-
-    React.useEffect(() => {
-        console.log(context.user)
-    }, [])
-
 
     const updateProfileImageHandler = async () => {
         (async () => {
@@ -61,6 +51,26 @@ const CompanyProfile = (props) => {
         }
     }
 
+    const getCurrentPositionHandler = () => {
+        try {
+            (async () => {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    return;
+
+                }
+                let location = await Location.getCurrentPositionAsync({});
+                if (location) {
+                    context.updateUserLocation({
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude
+                    })
+                }
+            })();
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <View style={styles.container}>
             <ScrollView
@@ -163,16 +173,15 @@ const CompanyProfile = (props) => {
                                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                                 style={styles.map}
                                 region={{
-                                    latitude: 35.843400794030224,
-                                    longitude: 10.618040611648018,
-                                    latitudeDelta: 0.015,
-                                    longitudeDelta: 0.0121,
+                                    latitude: context.user.position?.latitude,
+                                    longitude: context.user.position?.longitude,
                                 }}
                             >
                                 <Marker
-                                    coordinate={{ latitude, longitude }}
-                                    title={'Current Location'}
-                                    description={'Hey'}
+                                    image={imgMarker}
+                                    coordinate={{ latitude: context.user.position?.latitude, longitude: context.user.position?.longitude }}
+                                    title={'My position'}
+                                    description={'The company location'}
                                 >
                                 </Marker>
                             </MapView>

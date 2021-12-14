@@ -121,7 +121,7 @@ const AppContext = (props) => {
                 console.log(err)
             })
     }
-    const errorOccured = () => {
+    const errorOccured = (err) => {
         if (err.response.status === 403) {
             setLoadingUser(true)
             setUser(null)
@@ -130,6 +130,25 @@ const AppContext = (props) => {
 
     }
 
+
+    const updateUserLocation = (geoLocation) => {
+        const patchedGeoLocation = [{
+            propName: 'position',
+            value: geoLocation
+        }]
+        axios.patch('/user', patchedGeoLocation)
+            .then(res => {
+                console.log(res.data)
+                setUser({
+                    ...user,
+                    position: geoLocation
+                })
+
+            })
+            .catch(err => {
+                errorOccured(err)
+            })
+    }
     const registerForPushNotificationsAsync = async () => {
         let token;
 
@@ -174,6 +193,7 @@ const AppContext = (props) => {
                 logoutUser,
                 errorOccured,
                 addUserAppliedOffer,
+                updateUserLocation
 
             }}
         >
