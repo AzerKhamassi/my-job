@@ -23,7 +23,7 @@ const Card = (props) => {
                         </TouchableWithoutFeedback>
                     </View>
                     <View>
-                        <TouchableWithoutFeedback onPress={() => console.log('decline')}>
+                        <TouchableWithoutFeedback onPress={() => props.rejectApplicationFunction()}>
                             <FontAwesome5 name="times-circle" size={24} color="red" />
                         </TouchableWithoutFeedback>
                     </View>

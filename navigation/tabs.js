@@ -18,6 +18,9 @@ import Business from '../screens/Business/Business';
 import SecurityScreen from '../screens/Security/Security'
 import SearchedOffers from '../screens/SearchedOffers/SearchedOffers';
 import CompanyProfile from '../screens/Company/CompanyProfile';
+import AddOffer from '../screens/Business/AddOffer/AddOffer';
+import RecommendedOffers from '../screens/Home/RecommendedOffers/RecommendedOffers';
+import RecentOffers from '../screens/Home/RecentOffers/RecentOffers';
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -50,6 +53,13 @@ const HomeStackScreen = () => {
             <HomeStack.Screen name="Search" component={SearchedOffers} options={{
 
             }} />
+            <HomeStack.Screen name="RecommendedOffers" component={RecommendedOffers} options={{
+                title: 'Recommended Offers'
+            }} />
+            <HomeStack.Screen name="RecentOffers" component={RecentOffers} options={{
+                title: 'Recent Offers'
+            }} />
+
 
         </HomeStack.Navigator>
     );
@@ -103,6 +113,10 @@ const CompanyProfileStackScreen = () => {
             }} />
             <ProfileStack.Screen name="Security" component={SecurityScreen} options={{
                 animation: 'slide_from_right'
+            }} />
+            <ProfileStack.Screen name="AddOffer" component={AddOffer} options={{
+                animation: 'slide_from_bottom',
+                title: 'Add Offer '
             }} />
         </CompanyProfileStack.Navigator>
     );

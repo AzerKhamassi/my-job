@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
         padding: 10,
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center'
     },
     profileImage: {
         height: 40,

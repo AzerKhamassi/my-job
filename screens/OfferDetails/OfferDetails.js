@@ -47,16 +47,14 @@ const OfferDetails = (props) => {
             })
     }
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    }
+
 
     const applyHandler = () => {
         axios.post(`/offer/${offer?._id}/apply`, {
         }).then(res => {
             console.log(res.data)
+            context.addUserAppliedOffer({ ...offer })
             setModalVisible(false)
-            // context.addUserAppliedOffer(offer)
         }).catch(err => {
             console.log(err)
         })
@@ -117,7 +115,7 @@ const OfferDetails = (props) => {
                         <TouchableHighlight
                             underlayColor='#52BCF6'
                             style={styles.applyButton}
-                            onPress={() => { setModalVisible(true) }}>
+                            onPress={() => { setModalVisible(true); console.log('amirrr') }}>
                             <Text style={styles.buttonText}>Apply now</Text>
                         </TouchableHighlight>
                         <AwesomeAlert

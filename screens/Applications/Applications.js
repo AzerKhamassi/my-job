@@ -12,7 +12,7 @@ const Applications = (props) => {
     React.useState(() => {
         axios.get('/offer/client').then(res => {
             setOffers(res.data.offers)
-            res.data.offers.map(offer => offer.applicants.map(app => console.log(app)))
+            res.data.offers.map(offer => offer.status)
         }).catch(err => {
             console.log(err)
         })
@@ -27,6 +27,21 @@ const Applications = (props) => {
             .catch(err => console.log(err.response.data.message))
     }
 
+
+    const rejectApplicationHandler = (offer, applicant) => {
+        const rejectedApplicantIndex = offer.applicants.findIndex(app => app.user._id === applicant.user._id)
+        console.log(rejectedApplicantIndex)
+        // axios.patch(`/offer/${offer._id}/applicant/${applicant.user._id}`, {
+        //     status: 'rejected'
+        // })
+        //     .then(res => {
+
+
+
+        //     })
+        //     .catch(err => console.log(err.response.data.message))
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView
@@ -37,14 +52,20 @@ const Applications = (props) => {
                     <View>
                         {
                             offers.map(offer => offer.applicants.map(applicant => (
-                                <Card
-                                    offerName={offer.name}
-                                    key={applicant._id}
-                                    applicant={`${applicant.user.firstName} ${applicant.user.lastName}`}
-                                    date={applicant.date}
-                                    showControls={offer.status === 'pending'}
-                                    acceptApplicationFunction={() => acceptApplicationHandler(offer, applicant)}
-                                />
+                                <React.Fragment>
+                                    {
+                                        console.log(applicant.status)
+                                    }
+                                    <Card
+                                        offerName={offer.name}
+                                        key={applicant._id}
+                                        applicant={`${applicant.user.firstName} ${applicant.user.lastName}`}
+                                        date={applicant.date}
+                                        showControls={applicant.status === 'pending'}
+                                        acceptApplicationFunction={() => acceptApplicationHandler(offer, applicant)}
+                                        rejectApplicationFunction={() => rejectApplicationHandler(offer, applicant)}
+                                    />
+                                </React.Fragment>
                             )))
                         }
                     </View>

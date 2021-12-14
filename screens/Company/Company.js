@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, TouchableWithoutFeedback, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, TouchableWithoutFeedback, Pressable, TouchableHighlight } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -7,7 +7,6 @@ import axios from '../../utlis/axios'
 import CategoryCard from '../../components/CategoryCard/CategoryCard';
 import OfferCard from '../../components/OfferCard/OfferCard';
 import GlobalContext from '../../context/GlobalContext';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -40,6 +39,34 @@ const Company = (props) => {
                 context.errorOccured(err)
             })
     }, [])
+
+
+    const followClientHandler = (userId) => {
+        console.log(userId)
+        axios.post('/user/follow', { clientId: userId }).then(res => {
+            setCompany({ ...company, followers: [...company.followers, context.user._id] })
+            console.log(res.data)
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+
+    const unfollowClientHandler = (userId) => {
+        axios.delete(`/user/follow/${userId}`).then(res => {
+            console.log(res.data)
+            const _company = { ...company }
+            const followerIndex = company.followers.findIndex(follower => follower === context.user._id)
+            if (followerIndex > -1) {
+                _company.followers.splice(followerIndex, 1)
+                setCompany({ ..._company })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+
     if (company)
         return (
             <View style={styles.container}>
@@ -56,36 +83,38 @@ const Company = (props) => {
                             <Text style={styles.fullName}>{company?.name}</Text>
                             {
                                 context.user._id !== company._id &&
-                                <TouchableOpacity
-                                    underlayColor='#52BCF6'
-                                    style={styles.subscribeButton}
-
-                                >
+                                <React.Fragment>
                                     {
-                                        console.log(company.followers.map(follower => follower._id).includes(context.user._id))
+                                        console.log(company.followers.map(follower => follower))
                                     }
                                     {
-                                        company.followers.map(follower => follower._id).includes(context.user._id)
+                                        company.followers.includes(context.user._id)
                                             ?
-                                            <TouchableWithoutFeedback onPress={() => context.followClientHandler(company._id)}>
-                                                <React.Fragment>
-                                                    <SimpleLineIcons name="user-following" size={22} color="white" />
-                                                    <Text style={styles.subscribeText}>
-                                                        Unsubscribe
-                                                    </Text>
-                                                </React.Fragment>
-                                            </TouchableWithoutFeedback>
+                                            <React.Fragment>
+                                                <TouchableHighlight underlayColor='#52BCF6' style={styles.subscribeButton} onPress={() => unfollowClientHandler(company._id)}>
+                                                    <React.Fragment>
+
+                                                        <SimpleLineIcons name="user-following" size={22} color="white" />
+                                                        <Text style={styles.subscribeText}>
+                                                            Unsubscribe
+                                                        </Text>
+                                                    </React.Fragment>
+                                                </TouchableHighlight>
+                                            </React.Fragment>
                                             :
-                                            <TouchableWithoutFeedback onPress={() => context.unfollowClientHandler(company._id)}>
-                                                <React.Fragment>
-                                                    <SimpleLineIcons name="user-follow" size={22} color="white" />
-                                                    <Text style={styles.subscribeText}>
-                                                        Subscribe
-                                                    </Text>
-                                                </React.Fragment>
-                                            </TouchableWithoutFeedback>
+                                            <React.Fragment>
+                                                <TouchableHighlight underlayColor='#52BCF6' style={styles.subscribeButton} onPress={() => followClientHandler(company._id)}>
+                                                    <React.Fragment>
+
+                                                        <SimpleLineIcons name="user-follow" size={22} color="white" />
+                                                        <Text style={styles.subscribeText}>
+                                                            Subscribe
+                                                        </Text>
+                                                    </React.Fragment>
+                                                </TouchableHighlight>
+                                            </React.Fragment>
                                     }
-                                </TouchableOpacity>
+                                </React.Fragment>
                             }
                         </View>
                         <View style={styles.section}>

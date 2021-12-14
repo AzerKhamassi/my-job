@@ -128,7 +128,7 @@ const Home = (props) => {
                         </View>
                         <View style={styles.sectionTitle}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Recommended</Text>
-                            <Text style={{ fontSize: 10 }}>View All</Text>
+                            <Text onPress={() => props.navigation.navigate('RecommendedOffers')} style={{ fontSize: 10 }}>View All</Text>
                         </View>
                         <View style={styles.offersSection}>
                             {
@@ -154,7 +154,7 @@ const Home = (props) => {
                         </View>
                         <View style={styles.sectionTitle}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Recently posted</Text>
-                            <Text style={{ fontSize: 10 }}>View All</Text>
+                            <Text onPress={() => props.navigation.navigate('RecentOffers')} style={{ fontSize: 10 }}>View All</Text>
                         </View>
                         <View style={styles.offersSection}>
                             {

@@ -10,6 +10,7 @@ import GlobalContext from '../../context/GlobalContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker'
 
 
 const CompanyProfile = (props) => {
@@ -23,6 +24,43 @@ const CompanyProfile = (props) => {
     React.useEffect(() => {
         console.log(context.user)
     }, [])
+
+
+    const updateProfileImageHandler = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.cancelled) {
+            setImage(result.uri)
+            const _image = {
+                uri: image,
+                type: 'image/jpeg',
+                name: 'photo.jpg',
+            };
+            const formData = new FormData();
+            formData.append('files', _image);
+            axios.post('/upload', formData).then(res => {
+                console.log(res.data)
+                axios.patch('/user', [{ propName: 'profileImage', value: res.data[0] }]).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }).catch(err => console.log(err))
+        }
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView
@@ -41,7 +79,9 @@ const CompanyProfile = (props) => {
                         <Image source={{ uri: context.user.profileImage }} style={styles.profileImage}></Image>
 
                         <View style={styles.editIcon}>
-                            <AntDesign name="camera" size={14} color="white" />
+                            <TouchableWithoutFeedback>
+                                <AntDesign name="camera" size={14} color="white" onPress={() => updateProfileImageHandler()} />
+                            </TouchableWithoutFeedback>
                         </View>
                     </View>
                     <View style={styles.title}>

@@ -78,11 +78,14 @@ const AppContext = (props) => {
 
     }
 
-    const logoutUser = async () => {
+    const logoutUser = () => {
         setLoadingUser(true)
-        await asyncStorageService.clearToken()
-        setUser(null)
-        setLoadingUser(false)
+        axios.patch('/user/logout').then(async () => {
+            await asyncStorageService.clearToken()
+            setUser(null)
+            setLoadingUser(false)
+
+        }).catch(err => console.log(err))
     }
     const addUserSavedOffer = (offer) => {
         console.log(user.savedOffers.map(o => o._id))
@@ -93,38 +96,13 @@ const AppContext = (props) => {
     }
 
     const addUserAppliedOffer = (offer) => {
-        console.log(user.appliedOffers.map(o => o._id))
         setUser({
             ...user,
-            appliedOffers: [...user.savedOffers, offer]
+            appliedOffers: [...user.appliedOffers, offer]
         })
     }
 
-    const followClientHandler = (userId) => {
-        console.log(userId)
-        axios.post('/user/follow', { clientId: userId }).then(res => {
-            setUser({ ...user, followers: [...user.followers, userId] })
-            console.log(res.data)
-        }).catch(err => {
-            console.log(err)
-        })
 
-    }
-
-    const unfollowClientHandler = (userId) => {
-        axios.delete(`/user/follow/${userId}`).then(res => {
-            console.log(res)
-            const _user = { ...user }
-            const followerIndex = user.followers.findIndex(follower => follower === userId)
-            if (followerIndex > -1) {
-                _user.followers.splice(followerIndex, 1)
-                setUser({ ..._user })
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-
-    }
 
     const removeUserSavedOffer = (offerId) => {
         console.log(offerId)
@@ -196,8 +174,7 @@ const AppContext = (props) => {
                 logoutUser,
                 errorOccured,
                 addUserAppliedOffer,
-                followClientHandler,
-                unfollowClientHandler
+
             }}
         >
             {!loadingUser ? props.children
