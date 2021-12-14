@@ -46,9 +46,7 @@ const HomeStackScreen = () => {
             <HomeStack.Screen name="Company" component={Company} options={{
 
             }} />
-            <HomeStack.Screen name="Business" component={Business} options={{
 
-            }} />
             <HomeStack.Screen name="Search" component={SearchedOffers} options={{
 
             }} />
@@ -98,6 +96,9 @@ const CompanyProfileStackScreen = () => {
             }} />
             <CompanyProfileStack.Screen name="SettingsCompany" component={SettingsScreen} options={{
                 animation: 'slide_from_right'
+            }} />
+            <HomeStack.Screen name="Business" component={Business} options={{
+                animation: 'slide_from_left'
             }} />
         </CompanyProfileStack.Navigator>
     );

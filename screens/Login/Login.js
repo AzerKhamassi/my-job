@@ -93,13 +93,7 @@ const Login = (props) => {
                                     </Text>
                                 </View>
                             }
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-                                <View style={{ flex: 1, height: 1, backgroundColor: '#ddd' }} />
-                                <View>
-                                    <Text style={{ width: 50, textAlign: 'center', color: '#a7a7a7' }}>OR</Text>
-                                </View>
-                                <View style={{ flex: 1, height: 1, backgroundColor: '#ddd' }} />
-                            </View>
+
                             <View >
                                 <TouchableHighlight
                                     underlayColor='#52BCF6'
@@ -107,6 +101,13 @@ const Login = (props) => {
                                     onPress={() => { loginHandler() }}>
                                     <Text style={styles.buttonText}>Sign in</Text>
                                 </TouchableHighlight>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
+                                <View style={{ flex: 1, height: 1, backgroundColor: '#ddd' }} />
+                                <View>
+                                    <Text style={{ width: 50, textAlign: 'center', color: '#a7a7a7' }}>OR</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: '#ddd' }} />
                             </View>
                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                                 <Text
