@@ -6,18 +6,26 @@ const SearchFilters = (props) => {
         <View>
             <View>
                 <Text>Keyword</Text>
-                <TextInput style={styles.input} placeholder='Keyword' />
+                <TextInput
+                    style={styles.input}
+                    value={props.keyword}
+                    onChangeText={(text) => props.setKeyword(text)}
+                    placeholder='Keyword' />
             </View>
             <View>
                 <Text>Location</Text>
-                <TextInput style={styles.input} placeholder='Location' />
+                <TextInput
+                    style={styles.input}
+                    value={props.location}
+                    onChangeText={(text) => props.setLocation(text)}
+                    placeholder='Location' />
             </View>
             <View>
                 <TouchableHighlight
                     underlayColor='#52BCF6'
                     style={styles.applyButton}
-                    onPress={() => { console.log('apply now!') }}>
-                    <Text style={styles.buttonText}>Apply now</Text>
+                    onPress={() => { props.navigation.navigate('Search', { searchLocation: props.location, searchKeyword: props.keyword }) }}>
+                    <Text style={styles.buttonText}>Search</Text>
                 </TouchableHighlight>
             </View>
         </View>

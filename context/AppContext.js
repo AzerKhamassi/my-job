@@ -41,7 +41,8 @@ const AppContext = (props) => {
             notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
                 const newNotification = notification.request.content.data
                 setNotifications((_notifications) => {
-                    return [..._notifications, newNotification]
+
+                    return [newNotification, ..._notifications]
                 });
             });
 
@@ -62,7 +63,7 @@ const AppContext = (props) => {
             axios.get(`/user/connected-user`)
                 .then(response => {
                     setUser(response.data.connectedUser)
-                    setNotifications(response.data.notifications)
+                    setNotifications(response.data.notifications.slice(0).reverse())
                     setLoadingUser(false)
 
                 }).catch(err => {
@@ -90,6 +91,15 @@ const AppContext = (props) => {
             savedOffers: [...user.savedOffers, offer]
         })
     }
+
+    const addUserAppliedOffer = (offer) => {
+        console.log(user.appliedOffers.map(o => o._id))
+        setUser({
+            ...user,
+            appliedOffers: [...user.savedOffers, offer]
+        })
+    }
+
     const removeUserSavedOffer = (offerId) => {
         console.log(offerId)
         console.log(user.savedOffers.map(o => o._id))
@@ -158,7 +168,8 @@ const AppContext = (props) => {
                 setTabBarVisibility,
                 refreshUser,
                 logoutUser,
-                errorOccured
+                errorOccured,
+                addUserAppliedOffer
             }}
         >
             {!loadingUser ? props.children
@@ -174,7 +185,6 @@ const AppContext = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red'
     },
     image: {
         height: '100%',

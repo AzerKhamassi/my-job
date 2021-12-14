@@ -22,17 +22,16 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import SearchFilters from './components/SearchFilters';
 import GlobalContext from '../../context/GlobalContext'
 import axios from '../../utlis/axios';
+import { FontAwesome } from '@expo/vector-icons';
 
-const height = Dimensions.get("window").height;
-const width = Dimensions.get("window").width;
 
 
 const Home = (props) => {
-    var offset = 0;
     const refRBSheet = React.useRef();
     const [offers, setOffers] = React.useState(null)
     const context = React.useContext(GlobalContext)
-
+    const [keyword, setKeyword] = React.useState('')
+    const [location, setLocation] = React.useState('')
     React.useEffect(() => {
         axios.get('/offer')
             .then(res => {
@@ -45,6 +44,7 @@ const Home = (props) => {
 
 
     const onScrollHandler = (e) => {
+        let offset = 0;
         const currentOffset = e.nativeEvent.contentOffset.y;
         var direction = currentOffset > offset ? "down" : "up";
         offset = currentOffset;
@@ -67,20 +67,25 @@ const Home = (props) => {
                 >
                     <Pressable>
                         <View style={styles.searchSection}>
-                            <View>
+                            {/* <View>
                                 <EvilIcons style={styles.searchIcon} name="search" size={24} color="black" />
                                 <TextInput style={styles.input} placeholder='Search...' />
 
-                            </View>
+                            </View> */}
                             <View>
                                 <TouchableHighlight
                                     onPress={() => refRBSheet.current.open()}
                                     underlayColor='#52BCF6'
                                     style={styles.searchButton}>
-                                    <Octicons name="settings" size={24} color="white" />
+                                    <FontAwesome name="search" size={24} color="white" />
+                                    {/* <Octicons name="settings" size={24} color="white" /> */}
                                 </TouchableHighlight>
                                 <RBSheet
                                     ref={refRBSheet}
+                                    onClose={() => {
+                                        setKeyword('')
+                                        setLocation('')
+                                    }}
                                     closeOnDragDown={true}
                                     closeOnPressMask={true}
                                     customStyles={{
@@ -88,7 +93,8 @@ const Home = (props) => {
                                             backgroundColor: "rgba(0, 0, 0, 0.5)"
                                         },
                                         draggableIcon: {
-                                            backgroundColor: "#000"
+                                            backgroundColor: "#000",
+                                            display: Platform.OS === 'android' ? 'none' : 'flex'
                                         },
                                         container: {
                                             borderTopRightRadius: 20,
@@ -96,11 +102,18 @@ const Home = (props) => {
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',
-                                            paddingBottom: 8
+                                            paddingBottom: 8,
+                                            paddingTop: 5
                                         }
                                     }}
                                 >
-                                    <SearchFilters />
+                                    <SearchFilters
+                                        navigation={props.navigation}
+                                        keyword={keyword}
+                                        location={location}
+                                        setKeyword={setKeyword}
+                                        setLocation={setLocation}
+                                    />
                                 </RBSheet>
                             </View>
                         </View>
@@ -169,7 +182,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8FA',
-        paddingVertical: 5,
+        paddingVertical: 10,
     },
 
     headerSection: {
@@ -182,7 +195,7 @@ const styles = StyleSheet.create({
 
     searchSection: {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20

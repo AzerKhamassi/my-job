@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, TextInput, Keyboard, TouchableWithoutFeedback, Image } from 'react-native'
+import { View, StyleSheet, Text, TextInput, Keyboard, TouchableWithoutFeedback, Image, Pressable } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
 import Card from './Card/Card';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -11,21 +11,23 @@ import { AntDesign } from '@expo/vector-icons';
 import logo from '../../assets/my-job.png'
 import asyncStorageService from '../../utlis/asyncStorageService';
 import GlobalContext from '../../context/GlobalContext';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const SETTINGS_ITEMS = [
 
     {
         name: 'Notifications',
-        icon: <SimpleLineIcons name="bell" size={24} color="black" />
+        icon: <SimpleLineIcons name="bell" size={24} color="black" />,
     },
     {
         name: 'Privacy',
-        icon: <Feather name="lock" size={24} color="black" />
+        icon: <Feather name="lock" size={24} color="black" />,
     },
     {
         name: 'Security',
-        icon: <MaterialIcons name="security" size={24} color="black" />
+        icon: <MaterialIcons name="security" size={24} color="black" />,
+        route: 'Security'
     },
     {
         name: 'Payments',
@@ -56,32 +58,45 @@ const Settings = (props) => {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
-                <View style={styles.searchSection}>
-                    <EvilIcons style={styles.searchIcon} name="search" size={24} color="black" />
-                    <TextInput style={styles.input} placeholder='Search...' />
+                <ScrollView
+                    contentInsetAdjustmentBehavior="never"
+                    showsVerticalScrollIndicator={false}
+                >
+                    <Pressable>
 
-                </View>
-                <View style={styles.itemsContainer}>
-                    {
-                        SETTINGS_ITEMS.map(item => (
-                            <Card key={item.name} name={item.name} icon={item.icon} />
-                        ))
-                    }
-                </View>
-                <View style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', paddingHorizontal: 20, marginVertical: 10 }}>
-                    <Image source={logo} style={{ height: 35, width: 65 }}></Image>
-                </View>
-                <View style={styles.loginsSection}>
-                    <Text style={{ fontWeight: '800', fontSize: 16 }}>Logins</Text>
-                </View>
-                <TouchableWithoutFeedback onPress={() => logoutHandler()}>
-                    <View style={{ display: 'flex', flexDirection: 'row', marginVertical: 10, paddingHorizontal: 25 }}>
-                        <AntDesign name="logout" size={24} color="#52BCF6" />
-                        <Text style={{ fontWeight: 'bold', color: '#52BCF6', marginHorizontal: 5 }}>Log out</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                        <View style={styles.searchSection}>
+                            <EvilIcons style={styles.searchIcon} name="search" size={24} color="black" />
+                            <TextInput style={styles.input} placeholder='Search...' />
+
+                        </View>
+                        <View style={styles.itemsContainer}>
+                            {
+                                SETTINGS_ITEMS.map(item => (
+                                    <Card key={item.name}
+                                        name={item.name}
+                                        icon={item.icon}
+                                        route={item?.route}
+                                        navigation={props.navigation}
+                                    />
+                                ))
+                            }
+                        </View>
+                        <View style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', paddingHorizontal: 20, marginVertical: 10 }}>
+                            <Image source={logo} style={{ height: 35, width: 65 }}></Image>
+                        </View>
+                        <View style={styles.loginsSection}>
+                            <Text style={{ fontWeight: '800', fontSize: 16 }}>Logins</Text>
+                        </View>
+                        <TouchableWithoutFeedback onPress={() => logoutHandler()}>
+                            <View style={{ display: 'flex', flexDirection: 'row', marginVertical: 10, paddingHorizontal: 25 }}>
+                                <AntDesign name="logout" size={24} color="#52BCF6" />
+                                <Text style={{ fontWeight: 'bold', color: '#52BCF6', marginHorizontal: 5 }}>Log out</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </Pressable>
+                </ScrollView>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback >
     )
 }
 

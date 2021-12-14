@@ -6,11 +6,17 @@ import OfferCard from '../../components/OfferCard/OfferCard';
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext'
 import { FontAwesome } from '@expo/vector-icons';
+import AwesomeAlert from 'react-native-awesome-alerts';
+
+
+
 const OfferDetails = (props) => {
 
+    const context = React.useContext(GlobalContext)
     const [offer, setOffer] = React.useState(null)
     const [relatedOffers, setRelatedOffers] = React.useState([])
-    const context = React.useContext(GlobalContext)
+    const [isModalVisible, setModalVisible] = React.useState(false);
+
     React.useEffect(() => {
         axios.get(`/offer/${props.route.params.offerId}`)
             .then(res => {
@@ -40,9 +46,24 @@ const OfferDetails = (props) => {
                 context.errorOccured(err)
             })
     }
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    }
+
+    const applyHandler = () => {
+        axios.post(`/offer/${offer?._id}/apply`, {
+        }).then(res => {
+            console.log(res.data)
+            setModalVisible(false)
+            // context.addUserAppliedOffer(offer)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     if (offer)
         return (
-
             <View style={styles.container}>
                 <ScrollView contentInsetAdjustmentBehavior="never" showsVerticalScrollIndicator={false}>
                     <View style={styles.titleSection}>
@@ -96,9 +117,28 @@ const OfferDetails = (props) => {
                         <TouchableHighlight
                             underlayColor='#52BCF6'
                             style={styles.applyButton}
-                            onPress={() => { console.log('apply now!') }}>
+                            onPress={() => { setModalVisible(true) }}>
                             <Text style={styles.buttonText}>Apply now</Text>
                         </TouchableHighlight>
+                        <AwesomeAlert
+                            show={isModalVisible}
+                            showProgress={false}
+                            title={`Apply to ${offer.name}`}
+                            // message="I have a message for you!"
+                            closeOnTouchOutside={true}
+                            closeOnHardwareBackPress={false}
+                            showCancelButton={true}
+                            showConfirmButton={true}
+                            cancelText="No, cancel"
+                            confirmText="Yes, Apply"
+                            confirmButtonColor="green"
+                            onCancelPressed={() => {
+                                setModalVisible(false)
+                            }}
+                            onConfirmPressed={() => {
+                                applyHandler()
+                            }}
+                        />
                     </View>
                     <View style={styles.section}>
                         <Text style={{ fontWeight: 'bold', fontSize: 18 }}>

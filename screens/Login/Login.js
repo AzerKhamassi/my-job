@@ -7,13 +7,19 @@ import {
     Text,
     TouchableHighlight,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    SafeAreaView,
+    StatusBar,
+    KeyboardAvoidingView,
+    ScrollView,
+    Pressable
 } from 'react-native'
 import logo from '../../assets/my-job.png'
 import Constants from 'expo-constants'
 import axios from '../../utlis/axios'
 import GlobalContext from '../../context/GlobalContext'
 import asyncStorageService from '../../utlis/asyncStorageService'
+import { color } from 'react-native-reanimated'
 
 
 const Login = (props) => {
@@ -50,53 +56,66 @@ const Login = (props) => {
     if (!loading)
         return (
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
-                <View style={styles.container}>
-                    <View style={styles.logoContainer}>
-                        <Image source={logo} style={styles.logo}></Image>
-                    </View>
-                    <View>
-                        <TextInput placeholder='Email'
-                            style={styles.input}
-                            value={email}
-                            onChangeText={(text) => setEmail(text)}
-                            onFocus={() => setErrMessage(false)}
-                        />
-                        <TextInput placeholder='Password'
-                            style={styles.input}
-                            secureTextEntry={true}
-                            value={password}
-                            onChangeText={(text) => setPassword(text)}
-                            onFocus={() => setErrMessage(false)}
-                        />
-                    </View>
-                    <View style={styles.forgotPaswword}>
-                        <Text>Forgot password?</Text>
-                    </View>
-                    {
-                        errMessage &&
-                        <View style={styles.errorContainer}>
-                            <Text style={styles.errorMessage}>
-                                Incorrect email or password!
-                            </Text>
-                        </View>
-                    }
-                    <View >
-                        <TouchableHighlight
-                            underlayColor='#52BCF6'
-                            style={styles.loginButton}
-                            onPress={() => { loginHandler() }}>
-                            <Text style={styles.buttonText}>Sign in</Text>
-                        </TouchableHighlight>
-                    </View>
-                    <View>
-                        <Text>
-                            Don't have an account?
-                            <Text
-                                onPress={() => props.navigation.navigate('Signup')}
-                                style={styles.signupLink}> Sign up</Text>
-                        </Text>
-                    </View>
-                </View>
+                <SafeAreaView style={styles.container} >
+                    <ScrollView
+                        contentContainerStyle={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                        contentInsetAdjustmentBehavior="never"
+                        showsVerticalScrollIndicator={false}>
+                        <Pressable>
+
+
+
+                            <View style={styles.logoContainer}>
+                                <Image source={logo} style={styles.logo}></Image>
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Text >Your guide to find your next career opportunity</Text>
+                            </View>
+                            <View>
+                                <TextInput placeholder='Email'
+                                    style={styles.input}
+                                    value={email}
+                                    onChangeText={(text) => setEmail(text)}
+                                    onFocus={() => setErrMessage(false)}
+                                />
+                                <TextInput placeholder='Password'
+                                    style={styles.input}
+                                    secureTextEntry={true}
+                                    value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                                    onFocus={() => setErrMessage(false)}
+                                />
+                            </View>
+                            <View style={styles.forgotPaswword}>
+                                <Text style={{ color: '#52BCF6' }}>Forgot password?</Text>
+                            </View>
+                            {
+                                errMessage &&
+                                <View style={styles.errorContainer}>
+                                    <Text style={styles.errorMessage}>
+                                        Incorrect email or password!
+                                    </Text>
+                                </View>
+                            }
+                            <View >
+                                <TouchableHighlight
+                                    underlayColor='#52BCF6'
+                                    style={styles.loginButton}
+                                    onPress={() => { loginHandler() }}>
+                                    <Text style={styles.buttonText}>Sign in</Text>
+                                </TouchableHighlight>
+                            </View>
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text>
+                                    Don't have an account?
+                                    <Text
+                                        onPress={() => props.navigation.navigate('Signup')}
+                                        style={styles.signupLink}> Sign up</Text>
+                                </Text>
+                            </View>
+                        </Pressable>
+                    </ScrollView>
+                </SafeAreaView>
             </TouchableWithoutFeedback>
         )
     return null
@@ -108,7 +127,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#F8F8FA',
         alignItems: 'center',
         justifyContent: 'center',
-        // paddingTop: Constants.statusBarHeight + 20
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+
     },
     logoContainer: {
         height: 150,
@@ -132,7 +152,7 @@ const styles = StyleSheet.create({
     forgotPaswword: {
         width: 280,
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     loginButton: {
         backgroundColor: '#52BCF6',

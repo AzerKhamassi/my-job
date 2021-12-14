@@ -1,18 +1,61 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { Feather } from '@expo/vector-icons';
-import profileImage from '../../assets/azer.jpg'
 import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
+import GlobalContext from '../../context/GlobalContext'
+import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker'
 
 
 const Profile = (props) => {
+
+    const context = React.useContext(GlobalContext)
     const [longitude, setLongitude] = React.useState(10.618040611648018)
     const [latitude, setLatitude] = React.useState(36.843400794030224)
+    const [image, setImage] = React.useState(null);
+
     React.useEffect(() => {
+        console.log(context.user)
     }, [])
+
+
+    const updateProfileImageHandler = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.cancelled) {
+            setImage(result.uri)
+            const _image = {
+                uri: image,
+                type: 'image/jpeg',
+                name: 'photo.jpg',
+            };
+            const formData = new FormData();
+            formData.append('files', _image);
+            axios.post('/upload', formData).then(res => {
+                console.log(res.data)
+                axios.patch('/user', [{ propName: 'profileImage', value: res.data[0] }]).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }).catch(err => console.log(err))
+        }
+    }
 
     const getCurrentPositionHandler = () => {
         try {
@@ -34,20 +77,22 @@ const Profile = (props) => {
     }
     return (
         <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
-                <View style={styles.settings}>
+            <View style={styles.settings}>
+                <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Settings')}>
                     <Feather name="settings" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+            </View>
             <View style={styles.imageContainer}>
-                <Image source={profileImage} style={styles.profileImage}></Image>
+                <Image source={{ uri: context.user.profileImage }} style={styles.profileImage}></Image>
 
                 <View style={styles.editIcon}>
-                    <AntDesign name="camera" size={14} color="white" />
+                    <TouchableWithoutFeedback onPress={() => updateProfileImageHandler()}>
+                        <AntDesign name="camera" size={14} color="white" />
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
             <View style={styles.title}>
-                <Text style={styles.fullName}>Azer Khamassi</Text>
+                <Text style={styles.fullName}>{`${context.user.firstName} ${context.user.lastName}`}</Text>
                 <Text style={styles.role}>Full Stack Developer</Text>
             </View>
             <View style={styles.section}>
@@ -57,7 +102,7 @@ const Profile = (props) => {
             </View>
             <View style={styles.description}>
                 <Text style={{ color: '#909090' }}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    {context.user.description}
                 </Text>
             </View>
             <View style={styles.navigationHeader}>

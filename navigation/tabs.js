@@ -14,13 +14,19 @@ import logo from '../assets/my-job.png'
 import { AntDesign } from '@expo/vector-icons';
 import SettingsScreen from '../screens/Settings/Settings';
 import GlobalContext from '../context/GlobalContext';
-import Company from '../screens/Company/Company';
+import Company from '../screens/Company/CompanyProfile';
 import Business from '../screens/Business/Business';
+import SecurityScreen from '../screens/Security/Security'
+import SearchedOffers from '../screens/SearchedOffers/SearchedOffers';
+
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
 const SavedOffersStack = createNativeStackNavigator()
 const ProfileStack = createNativeStackNavigator()
+const CompanyProfileStack = createNativeStackNavigator()
+
+
 const HomeStackScreen = () => {
     return (
         <HomeStack.Navigator>
@@ -44,6 +50,10 @@ const HomeStackScreen = () => {
             <HomeStack.Screen name="Business" component={Business} options={{
 
             }} />
+            <HomeStack.Screen name="Search" component={SearchedOffers} options={{
+
+            }} />
+
         </HomeStack.Navigator>
     );
 }
@@ -64,18 +74,35 @@ const SavedOffersStackScreen = () => {
 
 const ProfileStackScreen = () => {
     return (
-        <SavedOffersStack.Navigator>
-            <SavedOffersStack.Screen name="ProfilePage" component={ProfileScreen} options={{
+        <ProfileStack.Navigator>
+            <ProfileStack.Screen name="ProfilePage" component={ProfileScreen} options={{
                 title: 'Profile'
 
             }} />
-            <SavedOffersStack.Screen name="Settings" component={SettingsScreen} options={{
+            <ProfileStack.Screen name="Settings" component={SettingsScreen} options={{
                 animation: 'slide_from_right'
             }} />
-        </SavedOffersStack.Navigator>
+            <ProfileStack.Screen name="Security" component={SecurityScreen} options={{
+                animation: 'slide_from_right'
+            }} />
+        </ProfileStack.Navigator>
     );
 }
 
+
+const CompanyProfileStackScreen = () => {
+    return (
+        <CompanyProfileStack.Navigator>
+            <CompanyProfileStack.Screen name="CompanyProfilePage" component={Company} options={{
+                title: 'Company'
+
+            }} />
+            <CompanyProfileStack.Screen name="SettingsCompany" component={SettingsScreen} options={{
+                animation: 'slide_from_right'
+            }} />
+        </CompanyProfileStack.Navigator>
+    );
+}
 
 const Tabs = (props) => {
     const context = React.useContext(GlobalContext)
@@ -90,7 +117,7 @@ const Tabs = (props) => {
                 ),
                 tabBarActiveTintColor: '#52BCF6',
                 headerShown: false,
-                tabBarStyle: { display: context.tabBarVisibility ? 'flex' : 'none' }
+                // tabBarStyle: { display: context.tabBarVisibility ? 'flex' : 'none' }
 
             }} />
             <Tab.Screen name='SavedOffersStack' component={SavedOffersStackScreen} options={{
@@ -126,14 +153,24 @@ const Tabs = (props) => {
                         tabBarActiveTintColor: '#52BCF6',
                     }} />
             }
-
-            <Tab.Screen name='Profile' component={ProfileStackScreen} options={{
-                tabBarIcon: ({ focused, color }) => (
-                    <FontAwesome name="user" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
-                ),
-                tabBarActiveTintColor: '#52BCF6',
-                headerShown: false,
-            }} />
+            {
+                // context.user.role === 'consultant' ?
+                <Tab.Screen name='Profile' component={ProfileStackScreen} options={{
+                    tabBarIcon: ({ focused, color }) => (
+                        <FontAwesome name="user" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                    ),
+                    tabBarActiveTintColor: '#52BCF6',
+                    headerShown: false,
+                }} />
+                // :
+                // <Tab.Screen name='CompanyProfile' component={CompanyProfileStackScreen} options={{
+                //     tabBarIcon: ({ focused, color }) => (
+                //         <FontAwesome name="user" size={25} color={focused ? '#52BCF6' : '#A7A7A7'} />
+                //     ),
+                //     tabBarActiveTintColor: '#52BCF6',
+                //     headerShown: false,
+                // }} />
+            }
         </Tab.Navigator>
     )
 }
