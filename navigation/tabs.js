@@ -21,6 +21,8 @@ import CompanyProfile from '../screens/Company/CompanyProfile';
 import AddOffer from '../screens/Business/AddOffer/AddOffer';
 import RecommendedOffers from '../screens/Home/RecommendedOffers/RecommendedOffers';
 import RecentOffers from '../screens/Home/RecentOffers/RecentOffers';
+import SearchedConsultant from '../screens/SearchedConsultants/SearchedConsultants';
+import Consultant from '../screens/Consultant/Consultant';
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createNativeStackNavigator()
@@ -59,7 +61,12 @@ const HomeStackScreen = () => {
             <HomeStack.Screen name="RecentOffers" component={RecentOffers} options={{
                 title: 'Recent Offers'
             }} />
-
+            <HomeStack.Screen name="SearchConsultant" component={SearchedConsultant} options={{
+                title: 'Search Consultant'
+            }} />
+            <HomeStack.Screen name="ProfileConsultant" component={Consultant} options={{
+                title: 'Consultant'
+            }} />
 
         </HomeStack.Navigator>
     );

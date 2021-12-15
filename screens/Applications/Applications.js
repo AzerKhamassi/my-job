@@ -31,15 +31,15 @@ const Applications = (props) => {
     const rejectApplicationHandler = (offer, applicant) => {
         const rejectedApplicantIndex = offer.applicants.findIndex(app => app.user._id === applicant.user._id)
         console.log(rejectedApplicantIndex)
-        // axios.patch(`/offer/${offer._id}/applicant/${applicant.user._id}`, {
-        //     status: 'rejected'
-        // })
-        //     .then(res => {
+        axios.patch(`/offer/${offer._id}/applicant/${applicant.user._id}`, {
+            status: 'rejected'
+        })
+            .then(res => {
 
+                console.log(res.data)
 
-
-        //     })
-        //     .catch(err => console.log(err.response.data.message))
+            })
+            .catch(err => console.log(err.response.data.message))
     }
 
     return (

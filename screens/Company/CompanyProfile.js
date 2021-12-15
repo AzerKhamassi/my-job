@@ -173,17 +173,30 @@ const CompanyProfile = (props) => {
                                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                                 style={styles.map}
                                 region={{
-                                    latitude: context.user.position?.latitude,
-                                    longitude: context.user.position?.longitude,
+                                    latitude: context.user.position?.latitude || 35.843400794030224,
+                                    longitude: context.user.position?.longitude || 10.618040611648018,
+                                    latitudeDelta: 0.015,
+                                    longitudeDelta: 0.0121,
+                                    // latitude: 35.843400794030224,
+                                    // longitude: 10.618040611648018,
                                 }}
+
                             >
-                                <Marker
-                                    image={imgMarker}
-                                    coordinate={{ latitude: context.user.position?.latitude, longitude: context.user.position?.longitude }}
-                                    title={'My position'}
-                                    description={'The company location'}
-                                >
-                                </Marker>
+                                {
+                                    context.user.position &&
+                                    <Marker
+                                        // image={imgMarker}
+                                        coordinate={{ latitude: context.user.position?.latitude, longitude: context.user.position?.longitude }}
+                                        title={'My position'}
+                                        description={'The company location'}
+                                    >
+                                        <Image
+                                            source={imgMarker}
+                                            style={{ width: 26, height: 28 }}
+                                            resizeMode="contain"
+                                        />
+                                    </Marker>
+                                }
                             </MapView>
                         </View>
                     </View>

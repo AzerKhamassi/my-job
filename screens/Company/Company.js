@@ -6,7 +6,7 @@ import CategoryCard from '../../components/CategoryCard/CategoryCard';
 import OfferCard from '../../components/OfferCard/OfferCard';
 import GlobalContext from '../../context/GlobalContext';
 import { SimpleLineIcons } from '@expo/vector-icons';
-
+import imgMarker from '../../assets/map-marker.png'
 
 const Company = (props) => {
 
@@ -181,16 +181,27 @@ const Company = (props) => {
                                     provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                                     style={styles.map}
                                     region={{
-                                        latitude: company.position?.latitude,
-                                        longitude: company.position?.longitude,
+                                        latitude: company.position?.latitude || 35.843400794030224,
+                                        longitude: company.position?.longitude || 10.618040611648018,
+                                        latitudeDelta: 0.015,
+                                        longitudeDelta: 0.0121,
                                     }}
                                 >
-                                    <Marker
-                                        coordinate={{ latitude: company.position?.latitude, longitude: company.position?.longitude }}
-                                        title={'My position'}
-                                        description={'The company location'}
-                                    >
-                                    </Marker>
+                                    {
+                                        company.position &&
+                                        <Marker
+                                            // image={imgMarker}
+                                            coordinate={{ latitude: company.position?.latitude, longitude: company.position?.longitude }}
+                                            title={'My position'}
+                                            description={'The company location'}
+                                        >
+                                            <Image
+                                                source={imgMarker}
+                                                style={{ width: 26, height: 28 }}
+                                                resizeMode="contain"
+                                            />
+                                        </Marker>
+                                    }
                                 </MapView>
                             </View>
                         </View>

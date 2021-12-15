@@ -24,7 +24,9 @@ const SearchFilters = (props) => {
                 <TouchableHighlight
                     underlayColor='#52BCF6'
                     style={styles.applyButton}
-                    onPress={() => { props.navigation.navigate('Search', { searchLocation: props.location, searchKeyword: props.keyword }) }}>
+                    onPress={() => {
+                        props.navigation.navigate(`${props.userRole === 'consultant' ? 'Search' : 'SearchConsultant'}`, { searchLocation: props.location, searchKeyword: props.keyword })
+                    }}>
                     <Text style={styles.buttonText}>Search</Text>
                 </TouchableHighlight>
             </View>

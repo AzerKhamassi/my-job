@@ -97,31 +97,31 @@ const Signup = (props) => {
         // console.log(formData)
         axios.post('/upload', formData).then(res => {
             console.log(res.data)
-            // if (password.trim() === repassword.trim()) {
-            //     axios.post('/user', {
-            //         name: fullName,
-            //         description,
-            //         role: toggle ? 'consultant' : 'client',
-            //         password,
-            //         phone,
-            //         email,
-            //         address,
-            //         city: '60fb58640065601907b5110c',
-            //         domain: '60ff4e88c295452d940be7cd',
-            //         profileImage: res.data[0]
-            //     }).then(res => {
-            //         setAddress('')
-            //         setDescription('')
-            //         setEmail('')
-            //         setFullName('')
-            //         setPassword('')
-            //         setRepassword('')
-            //         setPhone('')
-            //         setTags([])
-            //     }).catch(err => console.log(err))
-            // }
-            // else
-            //     setErrMessage(true)
+            if (password.trim() === repassword.trim()) {
+                axios.post('/user', {
+                    name: fullName,
+                    description,
+                    role: toggle ? 'consultant' : 'client',
+                    password,
+                    phone,
+                    email,
+                    address,
+                    city: '60fb58640065601907b5110c',
+                    domain: '60ff4e88c295452d940be7cd',
+                    profileImage: res.data[0]
+                }).then(res => {
+                    setAddress('')
+                    setDescription('')
+                    setEmail('')
+                    setFullName('')
+                    setPassword('')
+                    setRepassword('')
+                    setPhone('')
+                    setTags([])
+                }).catch(err => console.log(err))
+            }
+            else
+                setErrMessage(true)
         }).catch(err => console.log(err))
 
     }
@@ -189,12 +189,12 @@ const Signup = (props) => {
                                     secureTextEntry={true} style={styles.input} />
                                 <TextInput placeholder='Retype password' value={repassword}
                                     onChangeText={(text) => setRepassword(text)} secureTextEntry={true} style={styles.input} />
-                                <View >
+                                {/* <View >
                                     <Text style={{ marginVertical: 10 }}>Country</Text>
 
                                     <Text style={{ marginVertical: 10 }}>City</Text>
 
-                                </View>
+                                </View> */}
                                 <TextInput placeholder='Address' value={address}
                                     onChangeText={(text) => setAddress(text)} style={styles.input} />
                                 <TextInput placeholder='Description' value={description}

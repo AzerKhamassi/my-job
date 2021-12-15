@@ -6,7 +6,6 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
 import GlobalContext from '../../context/GlobalContext'
-import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
@@ -98,8 +97,6 @@ const renderScene = SceneMap({
 const Profile = (props) => {
 
     const context = React.useContext(GlobalContext)
-    const [longitude, setLongitude] = React.useState(10.618040611648018)
-    const [latitude, setLatitude] = React.useState(36.843400794030224)
     const [image, setImage] = React.useState(null);
     const layout = useWindowDimensions();
 

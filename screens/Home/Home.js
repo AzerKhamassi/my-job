@@ -122,6 +122,7 @@ const Home = (props) => {
                                         location={location}
                                         setKeyword={setKeyword}
                                         setLocation={setLocation}
+                                        userRole={context.user.role}
                                     />
                                 </RBSheet>
                             </View>

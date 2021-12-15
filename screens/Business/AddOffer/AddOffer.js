@@ -95,14 +95,14 @@ const AddOffer = (props) => {
                                         onChangeText={(text) => setDuration({ ...duration, to: text })}
                                         value={duration.to} />
                                 </View>
-                                <View >
+                                {/* <View >
                                     <Text style={{ marginVertical: 10 }}>City</Text>
 
                                 </View>
                                 <View>
                                     <Text style={{ marginVertical: 10 }}>Category</Text>
 
-                                </View>
+                                </View> */}
                                 <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <TextInput style={styles.inputTag} placeholder='Tag' value={tag} onChangeText={(text) => setTag(text)} />
                                     <TouchableHighlight
